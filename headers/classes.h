@@ -2,32 +2,34 @@
 #include <iostream>
 #include "ClusAPI.h"
 
-class ClusterObject;
+class ClusObject;
 class Node; class Resource; class Group;
+
+typedef class Cluster* PCluster;
 
 class Cluster 
 {
 public:
-    const HCLUSTER m_pCluster;
-    std::wstring m_clusterName;
+    const HCLUSTER mPCluster;
+    const std::wstring mCName;
 
     //items containers
-    std::list<Node> m_nodes;
-    std::list<Group> m_groups;
-    std::list<Resource> m_resourses;
+    std::list<Node> mNodes;
+    std::list<Group> mGroups;
+    std::list<Resource> mResources;
 
     Cluster(const HCLUSTER pCluster, std::wstring clusterName)
-        : m_pCluster(pCluster), m_clusterName(clusterName) {
+        : mPCluster(pCluster), mCName(clusterName) {
 
         fetchAnyItems(CLUSTER_ENUM_NODE);
-        fetchAnyItems(CLUSTER_ENUM_GROUP);
+        /*fetchAnyItems(CLUSTER_ENUM_GROUP);
         fetchAnyItems(CLUSTER_ENUM_RESOURCE);
-        //fetchAnyItems(CLUSTER_ENUM_RESTYPE);
-        //fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
-        //fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
+        fetchAnyItems(CLUSTER_ENUM_RESTYPE);
+        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
+        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);*/
     }
     ~Cluster() {
-        CloseCluster(m_pCluster); // be or not to be
+        CloseCluster(mPCluster);
     }
 
 private:
@@ -35,7 +37,7 @@ private:
 };
 
 
-struct ClusterEnumProperties
+struct ClusObjProperties
 {
     DWORD version;
     DWORD type;
@@ -44,96 +46,71 @@ struct ClusterEnumProperties
     DWORD byteSizeName;
     std::wstring itemName;
 
-    ClusterEnumProperties() : version(0), type(0), byteSizeId(0), byteSizeName(0) {}
-    ClusterEnumProperties(const CLUSTER_ENUM_ITEM& winStruct)
-    {
-        version = winStruct.dwVersion;
-        type = winStruct.dwType;
+    ClusObjProperties() : version(0), type(0), byteSizeId(0), byteSizeName(0) {}
 
-        byteSizeId = winStruct.cbId;
+    ClusObjProperties(const CLUSTER_ENUM_ITEM& winStruct) 
+        : version(winStruct.dwVersion), type(winStruct.dwType),  byteSizeId(winStruct.cbId), byteSizeName(winStruct.cbName)
+    {
         itemId = winStruct.lpszId;
-        
-        byteSizeName = winStruct.cbName;
         itemName = winStruct.lpszName;
     }
-    ~ClusterEnumProperties() {}
-
-    ClusterEnumProperties& operator=(const ClusterEnumProperties& other)
-    {
-        if (this != &other) {
-            version = other.version;
-            type = other.type;
-            byteSizeId = other.byteSizeId;
-            itemId = other.itemId;
-            byteSizeName = other.byteSizeName;
-            itemName = other.itemName;
-        }
-        return *this;
-    }
 };
 
 
-class ClusterObject {
+class ClusObject {
 protected:
-    DWORD m_errorHandler;
+    DWORD mErrorHandler;
 public:
-    const Cluster* cluster;
-    const ClusterEnumProperties properties;
+    PCluster cluster;
+    ClusObjProperties properties;
 
-    ClusterObject(const Cluster* hCluster, const PCLUSTER_ENUM_ITEM lProperties)
-        : cluster(hCluster), properties(*lProperties), m_errorHandler(0) {}
-    ~ClusterObject() {}
+    ClusObject(const PCluster hCluster, const PCLUSTER_ENUM_ITEM lProperties)
+        : cluster(hCluster), properties(*lProperties), mErrorHandler(0) {}
 };
 
-class Node : public ClusterObject
+class Node : public ClusObject
 {
-    HNODE m_pNode;
+    HNODE mPNode;
 public:
     CLUSTER_NODE_STATE state;
 
-    Node(const Cluster* pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusterObject(pCluster, pWinStruct)
+    Node(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct)
     {
-        m_pNode = OpenClusterNode(pCluster->m_pCluster, pWinStruct->lpszName);
-        state = GetClusterNodeState(m_pNode);
+        mPNode = OpenClusterNode(pCluster->mPCluster, pWinStruct->lpszName);
+        state = GetClusterNodeState(mPNode);
     }
     ~Node() {
-        CloseClusterNode(m_pNode);
+        CloseClusterNode(mPNode);
     }
 };
 
-class Group : public ClusterObject
+class Group : public ClusObject
 {
-    HGROUP m_pGroup;
+    HGROUP mPGroup;
 public:
-    std::wstring csvName; // shared volume
-    //CLUSTER_GROUP_STATE state;
+    std::wstring csvName;
 
-    Group(const Cluster* pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusterObject(pCluster, pWinStruct)
+    Group(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct)
     {
-        m_pGroup = OpenClusterGroup(pCluster->m_pCluster, pWinStruct->lpszName);
-        //state = GetClusterGroupState(m_pGroup...);
+        mPGroup = OpenClusterGroup(pCluster->mPCluster, pWinStruct->lpszName);
     }
     ~Group() {
-        CloseClusterGroup(m_pGroup);
+        CloseClusterGroup(mPGroup);
     }
 };
 
-class Resource : public ClusterObject
+class Resource : public ClusObject
 {
-    HRESOURCE m_pResource;
+    HRESOURCE mPResource;
 public:
     std::wstring resTypeName;
-    std::wstring csvName; // shared volume
+    std::wstring csvName;
 
-    //CLUSTER_GROUP_STATE state;
-
-    Resource(const Cluster* pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusterObject(pCluster, pWinStruct)
+    Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct)
     {
-        m_pResource = OpenClusterResource(pCluster->m_pCluster, pWinStruct->lpszName);
-        //state = GetClusterGroupState(m_pGroup...);
+        mPResource = OpenClusterResource(pCluster->mPCluster, pWinStruct->lpszName);
     }
-
     ~Resource() {
-        CloseClusterResource(m_pResource);
+        CloseClusterResource(mPResource);
     }
 };

@@ -23,33 +23,38 @@ int main()
     std::wcout << "Hello Enter ClusterNodeName!\n";
 
     std::wstring input;
-
     std::wcin >> input;
+
     std::wcout << "You've entered in cluster: [" << input << "]!\n";
 
-    GetClusterDataInfo clusData(input);
+    IClusDataProvider provider(input);
+    HCLUSTER hCluster = provider.GetClusterHandle();
 
-    HCLUSTER hCluster = clusData.GetClusterHandle();
-    LPWSTR clusterName = new WCHAR[64];
-    LONG* clusterNameSize = new LONG(1);
+    // Variables to store cluster name and size
+    BSTR clusterName = nullptr;
+    LONG clusterNameSize = 0;
 
-    clusData.GetClusterName(clusterName, clusterNameSize);
+    provider.GetClusterName(nullptr, &clusterNameSize);
+    clusterName = SysAllocStringLen(nullptr, clusterNameSize);
+    provider.GetClusterName(clusterName, &clusterNameSize);
 
     std::wcout << "Handle       [" << hCluster << "]\n";
     std::wcout << "Cluster Name [" << clusterName << "]\n";
-    std::wcout << "Name Size    [" << *clusterNameSize << "]\n" << std::endl;
+    std::wcout << "Name Size    [" << clusterNameSize << "]\n" << std::endl;
 
     //  information about cluster state (to be 19)
 
     DWORD state = 0;
-    clusData.GetClusterState(state);
+    provider.GetClusterState(&state);
 
     std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
+
+    return 0;
 
     //  information about nodes ///////////////////////////////////////////////////
 
     std::list<Node> nodes;
-    clusData.GetClusterNodes(&nodes);
+    provider.GetClusterNodes(nodes);
 
     std::wcout << "Start iteration of nodes! \n" << std::endl;
     // trying to iterate list of obtained nodes
@@ -66,7 +71,7 @@ int main()
     //  information about resources ///////////////////////////////////////////////////
 
     std::list<Resource> resources;
-    clusData.GetClusterResources(&resources);
+    provider.GetClusterResources(resources);
 
     std::wcout << "Start iteration of resources! \n" << std::endl;
     // trying to iterate list of obtained resources
@@ -83,7 +88,7 @@ int main()
     //  information about groups ///////////////////////////////////////////////////
 
     std::list<Group> groups;
-    clusData.GetClusterGroups(&groups);
+    provider.GetClusterGroups(groups);
 
     std::wcout << "Start iteration of groups! \n" << std::endl;
     // trying to iterate list of obtained groups
@@ -96,8 +101,6 @@ int main()
 
     std::wcout << "Finish! \n" << std::endl;
 
-    delete[] clusterName;
-    delete clusterNameSize;
-
+    SysFreeString(clusterName);
     return 0;
 }

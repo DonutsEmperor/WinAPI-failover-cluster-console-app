@@ -5,44 +5,50 @@
 #include "cluadmex.h"
 #include "classes.h"
 
-class GetClusterDataInfo : public IGetClusterDataInfo
+class IClusDataProvider : public IGetClusterDataInfo
 {
-    const Cluster* m_cluster;
-    ULONG m_refCount;
+    PCluster mCluster;
+    ULONG mRefCount;
+
 public:
-
-    GetClusterDataInfo() : m_refCount(1)    //const_cast<LPWSTR>(L"localhost") 
+    IClusDataProvider() : mRefCount(1)
     {
-        HCLUSTER hCluster = OpenCluster((L"localhost"));
-        m_cluster = new Cluster(hCluster, (L"localhost"));
+        HCLUSTER hCluster = OpenCluster(NULL);
+        mCluster = new Cluster(hCluster, (L"localhost"));
     }
-
-    GetClusterDataInfo(std::wstring clusterName) : m_refCount(1)
+    IClusDataProvider(std::wstring clusterName) : mRefCount(1)
     {
         HCLUSTER hCluster = OpenCluster(clusterName.c_str());
-        m_cluster = new Cluster(hCluster, clusterName);
+        mCluster = new Cluster(hCluster, clusterName);
+    }
+    ~IClusDataProvider() 
+    {
+        delete mCluster;
     }
 
-    ~GetClusterDataInfo() 
+    virtual HRESULT __stdcall GetClusterName(const BSTR lpszName, LONG* pcchName) override
     {
-        CloseCluster(m_cluster->m_pCluster);
-        delete m_cluster;
-    }
+        if (lpszName == nullptr || pcchName == nullptr) {
+            return E_POINTER;
+        }
 
-    virtual HRESULT __stdcall GetClusterName(BSTR lpszName, LONG* pcchName) override
-    {
-        size_t sizeOfClus = m_cluster->m_clusterName.size();
+        size_t bufferSize = *pcchName;
 
-        for (unsigned int i = 0; i < sizeOfClus; ++i)
-            lpszName[i] = m_cluster->m_clusterName[i];
+        size_t mpcchName = mCluster->mCName.size() + 1; // Adding 1 for the null terminator
+        if (bufferSize < mpcchName) {
+            *pcchName = mpcchName;
+            return HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER);
+        }
 
-        *pcchName = sizeOfClus;
+        wcscpy_s(lpszName, bufferSize, mCluster->mCName.c_str());
+
+        *pcchName = mpcchName - 1; // Excluding the null terminator
         return S_OK;
     }
 
     virtual HCLUSTER __stdcall GetClusterHandle() override
     {
-        return m_cluster->m_pCluster;
+        return mCluster->mPCluster;
     }
 
     virtual LONG __stdcall GetObjectCount() override
@@ -50,34 +56,38 @@ public:
         return 1;
     }
 
-    HRESULT GetClusterState(DWORD& pdwClusterState) const
+    HRESULT GetClusterState(DWORD* pdwClusterState) const
     {
-        DWORD objectErrorCode = GetNodeClusterState(m_cluster->m_clusterName.c_str(), &pdwClusterState);
+        if (pdwClusterState == nullptr) {
+            return E_POINTER;
+        }
+
+        DWORD objectErrorCode = GetNodeClusterState(mCluster->mCName.c_str(), pdwClusterState);
 
         if (!pdwClusterState) 
         {
-            std::wcout << "ERROR CLUSTER STATE!!!" << std::endl;
-            return S_FALSE;
+            std::wcout << "ERROR GETTING CLUSTER STATE!!!" << std::endl;
+            return HRESULT_FROM_WIN32(objectErrorCode);
         }
 
         return S_OK;
     }
 
-    HRESULT GetClusterNodes(const std::list<Node>* clusterNodes) const
+    HRESULT GetClusterNodes(std::list<Node>& clusterNodes) const
     {
-        clusterNodes = &(m_cluster->m_nodes);
+        clusterNodes = mCluster->mNodes;
         return S_OK;
     }
 
-    HRESULT GetClusterResources(const std::list<Resource>* clusterNodes) const
+    HRESULT GetClusterResources(std::list<Resource>& clusterNodes) const
     {
-        clusterNodes = &(m_cluster->m_resourses);
+        clusterNodes = mCluster->mResources;
         return S_OK;
     }
 
-    HRESULT GetClusterGroups(const std::list<Group>* clusterNodes) const
+    HRESULT GetClusterGroups(std::list<Group>& clusterNodes) const
     {
-        clusterNodes = &(m_cluster->m_groups);
+        clusterNodes = mCluster->mGroups;
         return S_OK;
     }
 
@@ -92,13 +102,13 @@ public:
     // Override the AddRef function of IUnknown
     virtual ULONG __stdcall AddRef() override
     {
-        return InterlockedIncrement(&m_refCount); // Increment reference count and return the new value
+        return InterlockedIncrement(&mRefCount); // Increment reference count and return the new value
     }
 
     // Override the Release function of IUnknown
     virtual ULONG __stdcall Release() override
     {
-        ULONG count = InterlockedDecrement(&m_refCount); // Decrement reference count
+        ULONG count = InterlockedDecrement(&mRefCount); // Decrement reference count
         if (count == 0)
         {
             delete this; // If reference count reaches 0, delete the object
