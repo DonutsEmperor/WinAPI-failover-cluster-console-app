@@ -54,8 +54,11 @@ public:
     {
         DWORD objectErrorCode = GetNodeClusterState(m_cluster->m_clusterName.c_str(), &pdwClusterState);
 
-        if(pdwClusterState)
+        if (!pdwClusterState) 
+        {
+            std::wcout << "ERROR CLUSTER STATE!!!" << std::endl;
             return S_FALSE;
+        }
 
         return S_OK;
     }

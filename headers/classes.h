@@ -23,8 +23,8 @@ public:
         fetchAnyItems(CLUSTER_ENUM_GROUP);
         fetchAnyItems(CLUSTER_ENUM_RESOURCE);
         //fetchAnyItems(CLUSTER_ENUM_RESTYPE);
-        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
-        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
+        //fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
+        //fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
     }
     ~Cluster() {
         CloseCluster(m_pCluster); // be or not to be
