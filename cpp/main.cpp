@@ -31,16 +31,12 @@ int main()
     HCLUSTER hCluster = provider.GetClusterHandle();
 
     // Variables to store cluster name and size
-    BSTR clusterName = nullptr;
-    LONG clusterNameSize = 0;
 
-    provider.GetClusterName(nullptr, &clusterNameSize);
-    clusterName = SysAllocStringLen(nullptr, clusterNameSize);
-    provider.GetClusterName(clusterName, &clusterNameSize);
+    std::wstring clusName;
+    provider.GetClusterName(clusName);
 
     std::wcout << "Handle       [" << hCluster << "]\n";
-    std::wcout << "Cluster Name [" << clusterName << "]\n";
-    std::wcout << "Name Size    [" << clusterNameSize << "]\n" << std::endl;
+    std::wcout << "Cluster Name [" << clusName << "]\n";
 
     //  information about cluster state (to be 19)
 
@@ -48,8 +44,6 @@ int main()
     provider.GetClusterState(&state);
 
     std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
-
-    return 0;
 
     //  information about nodes ///////////////////////////////////////////////////
 
@@ -101,6 +95,5 @@ int main()
 
     std::wcout << "Finish! \n" << std::endl;
 
-    SysFreeString(clusterName);
     return 0;
 }

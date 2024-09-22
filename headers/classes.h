@@ -19,21 +19,21 @@ public:
     std::list<Resource> mResources;
 
     Cluster(const HCLUSTER pCluster, std::wstring clusterName)
-        : mPCluster(pCluster), mCName(clusterName) {
-
-        fetchAnyItems(CLUSTER_ENUM_NODE);
-        /*fetchAnyItems(CLUSTER_ENUM_GROUP);
-        fetchAnyItems(CLUSTER_ENUM_RESOURCE);
-        fetchAnyItems(CLUSTER_ENUM_RESTYPE);
-        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
-        fetchAnyItems(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);*/
+        : mPCluster(pCluster), mCName(clusterName) 
+    {
+        fetchItemsWithType(CLUSTER_ENUM_NODE);
+        fetchItemsWithType(CLUSTER_ENUM_GROUP);
+        fetchItemsWithType(CLUSTER_ENUM_RESOURCE);
+        fetchItemsWithType(CLUSTER_ENUM_RESTYPE);
+        fetchItemsWithType(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
+        fetchItemsWithType(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
     }
     ~Cluster() {
         CloseCluster(mPCluster);
     }
 
 private:
-    void fetchAnyItems(const int typeofEnum);
+    void fetchItemsWithType(const DWORD typeofEnum);
 };
 
 
