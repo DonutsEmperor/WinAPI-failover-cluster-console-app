@@ -43,19 +43,29 @@ void Cluster::fetchItemsWithType(const DWORD typeofEnum)
 
                 case CLUSTER_ENUM_RESTYPE:
                 {
-                    std::wcout << pItem->lpszName << std::endl;
+                    ResType restype(this, pItem);
+                    mResTypes.push_back(restype);
                 }
                 break;
 
-                case CLUSTER_ENUM_SHARED_VOLUME_GROUP:
+                case CLUSTER_ENUM_NETWORK:
                 {
-                    std::wcout << pItem->lpszName << std::endl;
+                    Network network(this, pItem);
+                    mNetworks.push_back(network);
+                }
+                break;
+
+                case CLUSTER_ENUM_NETINTERFACE:
+                {
+                    NetInterface netinterface(this, pItem);
+                    mNetInterfaces.push_back(netinterface);
                 }
                 break;
 
                 case CLUSTER_ENUM_SHARED_VOLUME_RESOURCE:
                 {
-                    std::wcout << pItem->lpszName << std::endl;
+                    SharedVolume sharedvolume(this, pItem);
+                    mCSVs.push_back(sharedvolume);
                 }
                 break;
             }
@@ -75,6 +85,39 @@ void Cluster::fetchItemsWithType(const DWORD typeofEnum)
     free(pItem);
 
     ClusterCloseEnumEx(hClusterEnum);
+}
+
+HRESULT Resource::GetClusterType() 
+{
+    mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
+
+    DWORD initialSizeOfBuffer = 64, returnedSizeOfBuffer = 0;
+    LPVOID buffer = malloc(sizeof(WCHAR) * initialSizeOfBuffer);
+
+    DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE, nullptr, 0, buffer, initialSizeOfBuffer, &returnedSizeOfBuffer);
+
+    /*std::wcout << "Error [" << errorcode << "]" << std::endl;
+    std::wcout << "Need bytes [" << returnedSizeOfBuffer << "]" << std::endl;*/
+
+    if (returnedSizeOfBuffer > initialSizeOfBuffer)
+    {
+        buffer = realloc(buffer, returnedSizeOfBuffer);
+        DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE, nullptr, 0, buffer, returnedSizeOfBuffer, &returnedSizeOfBuffer);
+    }
+
+    //std::wcout << "Bytes now [" << returnedSizeOfBuffer << "]" << std::endl;
+
+    if (buffer) {
+        //std::wcout << "Success!" << std::endl;
+        resTypeName = reinterpret_cast<LPCWSTR>(buffer);
+    }
+    else
+        return S_FALSE;
+
+    free(buffer);
+    CloseClusterResource(mPResource);
+
+    return S_OK;
 }
 
 

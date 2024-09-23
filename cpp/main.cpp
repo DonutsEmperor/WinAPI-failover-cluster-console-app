@@ -45,7 +45,9 @@ int main()
 
     std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
 
+
     //  information about nodes ///////////////////////////////////////////////////
+
 
     std::list<Node> nodes;
     provider.GetClusterNodes(nodes);
@@ -62,7 +64,9 @@ int main()
 
     std::wcout << "Finish! \n" << std::endl;
 
+
     //  information about resources ///////////////////////////////////////////////////
+
 
     std::list<Resource> resources;
     provider.GetClusterResources(resources);
@@ -72,14 +76,14 @@ int main()
 
     for (Resource& resource : resources)
     {
-        std::wcout << "Resource Name [" << resource.properties.itemName << "]\n";
-        std::wcout << "Resource ResType [" << resource.resTypeName << "]\n";
-        //std::wcout << "Resource CsvName? [" << resource.csvName << "]\n" << std::endl;
+        std::wcout << "Resource Name         [" << resource.properties.itemName << "]\n";
+        std::wcout << "Resource ResType Name [" << resource.resTypeName << "]\n" << std::endl;
     }
-
     std::wcout << "Finish! \n" << std::endl;
 
+
     //  information about groups ///////////////////////////////////////////////////
+
 
     std::list<Group> groups;
     provider.GetClusterGroups(groups);
@@ -90,10 +94,75 @@ int main()
     for (Group& group : groups)
     {
         std::wcout << "Group Name [" << group.properties.itemName << "] \n";
-        //std::wcout << "Group CsvName? [" << group.csvName << "]\n" << std::endl;
     }
-
     std::wcout << "Finish! \n" << std::endl;
+
+
+    //  information about restypes ///////////////////////////////////////////////////
+
+
+    std::list<ResType> restypes;
+    provider.GetClusterExistResTypes(restypes);
+
+    std::wcout << "Start iteration of restypes! \n" << std::endl;
+    // trying to iterate list of obtained restypes
+
+    for (ResType& restype : restypes)
+    {
+        std::wcout << "ResType Name [" << restype.properties.itemName << "] \n";
+    }
+    std::wcout << "Finish! \n" << std::endl;
+
+
+    //  information about networks ///////////////////////////////////////////////////
+
+
+    std::list<Network> networks;
+    provider.GetClusterNetworks(networks);
+
+    std::wcout << "Start iteration of networks! \n" << std::endl;
+    // trying to iterate list of obtained networks
+
+    for (Network& network : networks)
+    {
+        std::wcout << "Network Name [" << network.properties.itemName << "] \n";
+    }
+    std::wcout << "Finish! \n" << std::endl;
+
+
+    //  information about netinterfaces ///////////////////////////////////////////////////
+
+
+    std::list<NetInterface> netinterfaces;
+    provider.GetClusterNetInterfaces(netinterfaces);
+
+    std::wcout << "Start iteration of netinterfaces! \n" << std::endl;
+    // trying to iterate list of obtained netinterfaces
+
+    for (NetInterface& netinterface : netinterfaces)
+    {
+        std::wcout << "NetInterface Name [" << netinterface.properties.itemName << "] \n";
+    }
+    std::wcout << "Finish! \n" << std::endl;
+
+
+    //  information about sharedvolumes ///////////////////////////////////////////////////
+
+
+    std::list<SharedVolume> sharedvolumes;
+    provider.GetClusterSharedVolumes(sharedvolumes);
+
+    if (!sharedvolumes.empty()) 
+    {
+        std::wcout << "Start iteration of sharedvolumes! \n" << std::endl;
+        // trying to iterate list of obtained sharedvolumes
+
+        for (SharedVolume& sharedvolume : sharedvolumes)
+        {
+            std::wcout << "SharedVolumes Name [" << sharedvolume.properties.itemName << "] \n";
+        }
+        std::wcout << "Finish! \n" << std::endl;
+    }
 
     return 0;
 }

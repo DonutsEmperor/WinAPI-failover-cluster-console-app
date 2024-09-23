@@ -79,5 +79,29 @@ public:
         clusterNodes = mCluster->mGroups;
         return S_OK;
     }
+
+    HRESULT GetClusterResTypes(std::list<ResType>& clusterResTypes) const
+    {
+        clusterResTypes = mCluster->mResTypes;
+        return S_OK;
+    }
+
+    HRESULT GetClusterNetworks(std::list<Network>& clusterNetworks) const
+    {
+        clusterNetworks = mCluster->mNetworks;
+        return S_OK;
+    }
+
+    HRESULT GetClusterNetInterfaces(std::list<NetInterface>& clusterNetInterfaces) const
+    {
+        clusterNetInterfaces = mCluster->mNetInterfaces;
+        return S_OK;
+    }
+
+    HRESULT GetClusterSharedVolumes(std::list<SharedVolume>& clusterSharedVolumes) const
+    {
+        clusterSharedVolumes = mCluster->mCSVs;
+        return S_OK;
+    }
 };
 

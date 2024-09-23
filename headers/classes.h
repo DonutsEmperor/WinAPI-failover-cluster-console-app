@@ -2,8 +2,8 @@
 #include <iostream>
 #include "ClusAPI.h"
 
-class ClusObject;
-class Node; class Resource; class Group;
+class ClusObject; class Node; class Resource; class Group;
+class SharedVolume; class Network; class NetInterface; class ResType;
 
 typedef class Cluster* PCluster;
 
@@ -17,6 +17,10 @@ public:
     std::list<Node> mNodes;
     std::list<Group> mGroups;
     std::list<Resource> mResources;
+    std::list<ResType> mResTypes;
+    std::list<Network> mNetworks;
+    std::list<NetInterface> mNetInterfaces;
+    std::list<SharedVolume> mCSVs;
 
     Cluster(const HCLUSTER pCluster, std::wstring clusterName)
         : mPCluster(pCluster), mCName(clusterName) 
@@ -25,7 +29,8 @@ public:
         fetchItemsWithType(CLUSTER_ENUM_GROUP);
         fetchItemsWithType(CLUSTER_ENUM_RESOURCE);
         fetchItemsWithType(CLUSTER_ENUM_RESTYPE);
-        fetchItemsWithType(CLUSTER_ENUM_SHARED_VOLUME_GROUP);
+        fetchItemsWithType(CLUSTER_ENUM_NETWORK);
+        fetchItemsWithType(CLUSTER_ENUM_NETINTERFACE);
         fetchItemsWithType(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
     }
     ~Cluster() {
@@ -102,15 +107,44 @@ public:
 class Resource : public ClusObject
 {
     HRESOURCE mPResource;
+
 public:
     std::wstring resTypeName;
-    std::wstring csvName;
 
     Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct)
     {
-        mPResource = OpenClusterResource(pCluster->mPCluster, pWinStruct->lpszName);
+        mErrorHandler = GetClusterType();
     }
-    ~Resource() {
-        CloseClusterResource(mPResource);
-    }
+    ~Resource() {}
+    HRESULT GetClusterType();
+};
+
+class ResType : public ClusObject
+{
+public:
+    ResType(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct) { }
+    ~ResType() {}
+};
+
+
+class Network : public ClusObject
+{
+public:
+    Network(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct) { }
+    ~Network() {}
+};
+
+
+class NetInterface : public ClusObject
+{
+public:
+    NetInterface(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct) { }
+    ~NetInterface() {}
+};
+
+class SharedVolume : public ClusObject
+{
+public:
+    SharedVolume(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct) { }
+    ~SharedVolume() {}
 };
