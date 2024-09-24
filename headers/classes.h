@@ -114,9 +114,11 @@ public:
     Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) : ClusObject(pCluster, pWinStruct)
     {
         mErrorHandler = GetClusterType();
+        //mErrorHandler = GetClusterDiskInfo();
     }
     ~Resource() {}
     HRESULT GetClusterType();
+    HRESULT GetClusterDiskInfo();
 };
 
 class ResType : public ClusObject
