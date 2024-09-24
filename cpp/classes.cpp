@@ -91,33 +91,73 @@ HRESULT Resource::GetClusterType()
 {
     mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
 
-    DWORD initialSizeOfBuffer = 64, returnedSizeOfBuffer = 0;
-    LPVOID buffer = malloc(sizeof(WCHAR) * initialSizeOfBuffer);
+    DWORD returnedSizeOfBuffer = 0;
+    LPVOID buffer = malloc(sizeof(WCHAR) * 1);
 
-    DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE, nullptr, 0, buffer, initialSizeOfBuffer, &returnedSizeOfBuffer);
+    DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE,
+        nullptr, 0, buffer, sizeof(buffer), &returnedSizeOfBuffer);
 
     /*std::wcout << "Error [" << errorcode << "]" << std::endl;
     std::wcout << "Need bytes [" << returnedSizeOfBuffer << "]" << std::endl;*/
 
-    if (returnedSizeOfBuffer > initialSizeOfBuffer)
+    if (errorcode)
     {
         buffer = realloc(buffer, returnedSizeOfBuffer);
-        DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE, nullptr, 0, buffer, returnedSizeOfBuffer, &returnedSizeOfBuffer);
+        errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_GET_RESOURCE_TYPE,
+            nullptr, 0, buffer, returnedSizeOfBuffer, &returnedSizeOfBuffer);
     }
 
-    //std::wcout << "Bytes now [" << returnedSizeOfBuffer << "]" << std::endl;
+    /*std::wcout << "Bytes now [" << returnedSizeOfBuffer << "]" << std::endl;
+    std::wcout << "Error [" << errorcode << "]" << std::endl << std::endl;*/
 
-    if (buffer) {
+    if (!errorcode && buffer) {
         //std::wcout << "Success!" << std::endl;
         resTypeName = reinterpret_cast<LPCWSTR>(buffer);
     }
     else
+    {
+        free(buffer);
+        CloseClusterResource(mPResource);
         return S_FALSE;
+    }
+
+    free(buffer);
+    CloseClusterResource(mPResource);
+    return S_OK;
+}
+
+HRESULT Resource::GetClusterDiskInfo()
+{
+    mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
+
+    DWORD size = 0;
+    LPVOID buffer = malloc(sizeof(CLUSPROP_PARTITION_INFO_EX) * 1);
+
+    DWORD errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_STORAGE_GET_DISK_INFO_EX,
+        nullptr, 0, buffer, sizeof(buffer), &size);
+
+    //std::wcout << "Error [" << errorcode << "]" << std::endl;
+    //std::wcout << "Need bytes [" << returnedSizeOfBuffer << "]" << std::endl;
+
+    if (errorcode)
+    {
+        buffer = (LPVOID)realloc(buffer, size);
+        errorcode = ClusterResourceControl(mPResource, nullptr, CLUSCTL_RESOURCE_STORAGE_GET_DISK_INFO_EX,
+            nullptr, 0, buffer, size, &size);
+    }
+
+    //std::wcout << "Bytes now [" << returnedSizeOfBuffer << "]" << std::endl;
+    //std::wcout << "Error [" << errorcode << "]" << std::endl;
+
+    if (errorcode || !buffer)
+    {
+        free(buffer);
+        CloseClusterResource(mPResource);
+        return S_FALSE;
+    }
 
     free(buffer);
     CloseClusterResource(mPResource);
 
     return S_OK;
 }
-
-
