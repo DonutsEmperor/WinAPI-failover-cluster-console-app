@@ -32,6 +32,7 @@
     <ProjectGuid>{bf266854-5b0d-44d1-96cf-e9cc0684be12}</ProjectGuid>
     <RootNamespace>ConsoleProjectForClusters</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>FailoverClusterUser</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
