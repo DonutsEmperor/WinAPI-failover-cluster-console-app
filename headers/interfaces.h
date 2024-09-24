@@ -80,7 +80,7 @@ public:
         return S_OK;
     }
 
-    HRESULT GetClusterResTypes(std::list<ResType>& clusterResTypes) const
+    HRESULT GetClusterExistResTypes(std::list<ResType>& clusterResTypes) const
     {
         clusterResTypes = mCluster->mResTypes;
         return S_OK;
