@@ -19,12 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\classes.cpp" />
+    <ClCompile Include="cpp\Cluster.cpp" />
+    <ClCompile Include="cpp\GroupProvider.cpp" />
+    <ClCompile Include="cpp\ClusterManager.cpp" />
+    <ClCompile Include="cpp\NodeProvider.cpp" />
+    <ClCompile Include="cpp\ResourceProvider.cpp" />
     <ClCompile Include="cpp\main.cpp" />
+    <ClCompile Include="cpp\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\classes.h" />
-    <ClInclude Include="headers\interfaces.h" />
+    <ClInclude Include="headers\Cluster.h" />
+    <ClInclude Include="headers\ClusterObject.h" />
+    <ClInclude Include="headers\ClusterObjectProps.h" />
+    <ClInclude Include="headers\Group.h" />
+    <ClInclude Include="headers\IGroupProvider.h" />
+    <ClInclude Include="headers\IClusterManager.h" />
+    <ClInclude Include="headers\INodeProvider.h" />
+    <ClInclude Include="headers\IResourceProvider.h" />
+    <ClInclude Include="headers\Node.h" />
+    <ClInclude Include="headers\Resource.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
