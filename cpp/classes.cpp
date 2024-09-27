@@ -140,7 +140,6 @@ struct MyDiskInfo {
     DWORD dwType;
     std::variant<DWORD, WCHAR*> data;
 };
-
 HRESULT Resource::GetClusterDiskInfo()
 {
     mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
