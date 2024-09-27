@@ -46,6 +46,8 @@ int main()
     std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
 
 
+    return 101; 
+
     //  information about nodes ///////////////////////////////////////////////////
 
 
