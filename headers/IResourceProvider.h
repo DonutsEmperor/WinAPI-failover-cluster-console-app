@@ -7,4 +7,4 @@ public:
     virtual HRESULT AllocateResource(const Resource&) = 0;
 };
 
-//class ResourceProvider;
+class ResourceProvider;

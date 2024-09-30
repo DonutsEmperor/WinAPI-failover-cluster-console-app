@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cpp\Cluster.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Resources.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ClusterManager.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ClusterProvider.cpp">
+      <Filter>Source Files\Services\Providers</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GroupProvider.cpp">
+      <Filter>Source Files\Services\Providers</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NodeProvider.cpp">
+      <Filter>Source Files\Services\Providers</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ResourceProvider.cpp">
+      <Filter>Source Files\Services\Providers</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\Cluster.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Group.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ClusterObject.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ClusterObjectProps.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Node.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Resource.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IClusterManager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IClusterProvider.h">
+      <Filter>Header Files\Services\Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IGroupProvider.h">
+      <Filter>Header Files\Services\Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\INodeProvider.h">
+      <Filter>Header Files\Services\Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IResourceProvider.h">
+      <Filter>Header Files\Services\Providers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5dd6b589-b8dc-4278-84d8-6ea409869eab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{cbc2044a-1718-4b92-b214-689f83bd28b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{6474eedd-b93a-471f-af1e-abebb374a583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services">
+      <UniqueIdentifier>{75e1f49a-605e-45af-ad87-893431048f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{7608af8b-7fe8-49b8-969e-37ad4f0c2fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{1cb26b54-54ab-4f90-b984-bc4cab45e9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{657daed5-485f-4803-9b2d-73ca8b30413a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Providers">
+      <UniqueIdentifier>{bf02408e-c559-43f5-b963-4eb0ede06b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Providers">
+      <UniqueIdentifier>{da2f4c2c-545d-4abf-ab89-ba288ece0211}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
