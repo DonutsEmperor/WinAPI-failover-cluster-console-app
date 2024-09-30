@@ -1,8 +1,4 @@
-#include <windows.h>
-#include <string>
-
-#include "../headers/Cluster.h"
-#include "../headers/INodeProvider.h"
+#include "pch.h"
 
 class NodeProvider : public INodeProvider {
     PCluster mCluster;

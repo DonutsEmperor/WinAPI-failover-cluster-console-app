@@ -1,11 +1,3 @@
-#pragma once
-
-#include "Cluster.h"
-#include "IClusterProvider.h"
-#include "IGroupProvider.h"
-#include "IResourceProvider.h"
-#include "INodeProvider.h"
-
 class IClusterManager 
 {
 public:

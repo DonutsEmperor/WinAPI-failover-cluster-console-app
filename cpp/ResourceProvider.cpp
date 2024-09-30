@@ -1,7 +1,4 @@
-#include <windows.h>
-
-#include "../headers/Cluster.h"
-#include "../headers/IResourceProvider.h"
+#include "pch.h"
 
 class ResourceProvider : IResourceProvider {
     PCluster mCluster;

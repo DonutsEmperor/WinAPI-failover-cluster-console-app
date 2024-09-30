@@ -1,8 +1,4 @@
-#include <windows.h>
-#include <string>
-
-#include "ClusApi.h"
-#include "../headers/Cluster.h"
+#include "pch.h"
 
 void Cluster::FetchEnumerations(const DWORD typeofEnum) 
 {

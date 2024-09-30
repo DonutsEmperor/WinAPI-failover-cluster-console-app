@@ -1,5 +1,3 @@
-#pragma once
-
 class Node : public ClusterObject {
     HNODE mPNode;
 public:

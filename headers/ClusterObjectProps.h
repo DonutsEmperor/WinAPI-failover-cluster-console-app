@@ -1,5 +1,3 @@
-#pragma once
-
 class ClusterObjectProps {
 public:
     DWORD version;

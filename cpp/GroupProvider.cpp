@@ -1,7 +1,4 @@
-#include <windows.h>
-
-#include "../headers/Cluster.h"
-#include "../headers/IGroupProvider.h"
+#include "pch.h"
 
 class GroupProvider : public IGroupProvider {
     PCluster mCluster;

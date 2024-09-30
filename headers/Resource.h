@@ -1,5 +1,3 @@
-#pragma once
-
 class Resource : public ClusterObject {
     HRESOURCE mPResource;
 public:

@@ -1,5 +1,3 @@
-#pragma once
-
 class IGroupProvider {
 public:
     virtual ~IGroupProvider() {}

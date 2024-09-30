@@ -1,5 +1,3 @@
-#pragma once
-
 class ClusterObject {
 protected:
     DWORD mErrorHandler;

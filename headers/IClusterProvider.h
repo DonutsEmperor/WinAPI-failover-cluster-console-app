@@ -1,5 +1,3 @@
-#pragma once
-
 class IClusterProvider {
 public:
     virtual ~IClusterProvider() {}

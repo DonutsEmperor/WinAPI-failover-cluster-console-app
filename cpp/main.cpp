@@ -1,14 +1,4 @@
-#include <windows.h>
-#include <iostream>
-#include <fcntl.h>
-#include <io.h>
-
-#include "ClusApi.h"
-#include "../headers/IClusterManager.h"
-
-#include "ClusterManager.cpp"
-
-#pragma comment(lib, "ClusAPI.lib")
+#include "pch.h"
 
 void SetConsoleMode() 
 {
@@ -24,21 +14,21 @@ std::wstring GetClusterNodeName()
     std::wcin >> input;
     return input;
 }
-
-void DisplayClusterInfo(ClusterManager& provider)
-{
-
-    HCLUSTER hCluster = provider.GetClusterHandle();
-    std::wstring clusName;
-    provider.GetClusterName(clusName);
-
-    std::wcout << "Handle       [" << hCluster << "]\n";
-    std::wcout << "Cluster Name [" << clusName << "]\n";
-
-    DWORD state = 0;
-    provider.GetClusterState(&state);
-    std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
-}
+//
+//void DisplayClusterInfo(ClusterManager& provider)
+//{
+//
+//    HCLUSTER hCluster = provider.GetClusterHandle();
+//    std::wstring clusName;
+//    provider.GetClusterName(clusName);
+//
+//    std::wcout << "Handle       [" << hCluster << "]\n";
+//    std::wcout << "Cluster Name [" << clusName << "]\n";
+//
+//    DWORD state = 0;
+//    provider.GetClusterState(&state);
+//    std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
+//}
 
 template <typename T>
 void DisplayNodes(const std::list<T>& nodes) {
@@ -114,7 +104,9 @@ int main()
     std::wstring input = GetClusterNodeName();
     std::wcout << "You've entered in cluster: [" << input << "]!\n";
 
-    ClusterManager manager;
+    return 0;
+
+    /*ClusterManager manager;
     DisplayClusterInfo(manager);
 
     NodeProvider* nodeProvider = manager.GetNodeProvider();
@@ -146,7 +138,7 @@ int main()
 
     std::list<SharedVolume> sharedvolumes;
     manager.GetSharedVolumeList(sharedvolumes);
-    DisplaySharedVolumes(sharedvolumes);
+    DisplaySharedVolumes(sharedvolumes);*/
 
     return 0;
 }

@@ -1,14 +1,4 @@
-#include <windows.h>
-#include <iostream>
-#include <fcntl.h>
-#include <io.h>
-#include "ClusApi.h"
-
-#include "../headers/IClusterManager.h"
-
-#include "NodeProvider.cpp"
-#include "ResourceProvider.cpp"
-#include "GroupProvider.cpp"
+#include "pch.h"
 
 class ClusterManager : public IClusterManager {
     PCluster mCluster;

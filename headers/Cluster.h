@@ -1,21 +1,4 @@
-#pragma once
-
-#include <list>
-#include <windows.h>
-#include <iostream>
-#include <fcntl.h>
-#include <io.h>
-
-#include "ClusApi.h"
-
-class Cluster;
-typedef Cluster* PCluster;
-
-class Resource; class Node; class Group;
-class SharedVolume; class Network; class NetInterface; class ResourceType;
-
-#include "ClusterObjectProps.h"
-#include "ClusterObject.h"
+#include "../headers/pch.h"
 
 class Cluster {
 public:
