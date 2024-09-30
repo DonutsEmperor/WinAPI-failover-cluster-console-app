@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "../headers/Cluster.h"
 #include "../headers/IClusterProvider.h"
 
@@ -8,21 +6,6 @@ class ClusterProvider : public IClusterProvider {
 public:
     ClusterProvider(PCluster pCluster) : mCluster(pCluster) {}
     ~ClusterProvider() override {};
-
-    HRESULT MyOpenCluster(const std::wstring& clusterName) override {
-
-        HCLUSTER hCluster = OpenCluster(clusterName.c_str());
-        if (hCluster == nullptr) {
-            return E_FAIL;
-        }
-
-        mCluster = new Cluster(hCluster, clusterName);
-        return S_OK;
-    }
-
-    void MyCloseCluster() const override {
-        CloseCluster(mCluster->mPCluster);
-    }
 
     HCLUSTER GetClusterHandle() const override {
         return mCluster ? mCluster->mPCluster : nullptr;

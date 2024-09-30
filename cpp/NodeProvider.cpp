@@ -1,6 +1,3 @@
-#include <windows.h>
-#include <string>
-
 #include "../headers/Cluster.h"
 #include "../headers/INodeProvider.h"
 
@@ -10,10 +7,10 @@ public:
     NodeProvider(PCluster pCluster) : mCluster(pCluster) {}
     ~NodeProvider() override {};
     HRESULT GetClusterNodes(std::list<Node>& nodes) const override {
-        //nodes = mCluster->mNodes;
+        nodes = mCluster->mNodes;
         return S_OK;
     }
     HRESULT GetNodeStatus(const std::wstring& nodeName, DWORD* status) const override {
-        // Logic to get node status
+        return S_OK;
     }
 };

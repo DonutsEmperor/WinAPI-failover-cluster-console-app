@@ -25,19 +25,20 @@ std::wstring GetClusterNodeName()
     return input;
 }
 
-void DisplayClusterInfo(ClusterManager& provider)
+void DisplayClusterInfo(ClusterManager& manager)
 {
+    const ClusterProvider* provider = manager.GetClusterProvider();
 
-    /*HCLUSTER hCluster = provider.GetClusterHandle();
+    HCLUSTER hCluster = provider->GetClusterHandle();
     std::wstring clusName;
-    provider.GetClusterName(clusName);
+    provider->GetClusterName(clusName);
 
     std::wcout << "Handle       [" << hCluster << "]\n";
     std::wcout << "Cluster Name [" << clusName << "]\n";
 
     DWORD state = 0;
-    provider.GetClusterState(&state);
-    std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;*/
+    provider->GetClusterState(&state);
+    std::wcout << "Cluster state[" << state << "]. Must be 19\n" << std::endl;
 }
 
 template <typename T>
@@ -114,22 +115,20 @@ int main()
     std::wstring input = GetClusterNodeName();
     std::wcout << "You've entered in cluster: [" << input << "]!\n";
 
-    return 0;
-
-   /* ClusterManager manager;
+    ClusterManager manager(&input);
     DisplayClusterInfo(manager);
 
-    NodeProvider* nodeProvider = manager.GetNodeProvider();
+    const NodeProvider* nodeProvider = manager.GetNodeProvider();
     std::list<Node> nodes;
     nodeProvider->GetClusterNodes(nodes);
     DisplayNodes(nodes);
 
-    ResourceProvider* resourceProvider = manager.GetResourceProvider();
+    const ResourceProvider* resourceProvider = manager.GetResourceProvider();
     std::list<Resource> resources;
     resourceProvider->GetClusterResources(resources);
     DisplayResources(resources);
 
-    GroupProvider* groupProvider = manager.GetGroupProvider();
+    const GroupProvider* groupProvider = manager.GetGroupProvider();
     std::list<Group> groups;
     groupProvider->GetClusterGroups(groups);
     DisplayGroups(groups);
@@ -148,7 +147,7 @@ int main()
 
     std::list<SharedVolume> sharedvolumes;
     manager.GetSharedVolumeList(sharedvolumes);
-    DisplaySharedVolumes(sharedvolumes);*/
+    DisplaySharedVolumes(sharedvolumes);
 
     return 0;
 }

@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "../headers/Cluster.h"
 #include "../headers/IGroupProvider.h"
 
@@ -9,8 +7,10 @@ public:
     GroupProvider(PCluster pCluster) : mCluster(pCluster) {}
     ~GroupProvider() override {};
     HRESULT GetClusterGroups(std::list<Group>& groups) const override {
-        //groups = mCluster->mGroups;
+        groups = mCluster->mGroups;
         return S_OK;
     }
-    HRESULT AddGroup(const Group& group) override = 0;
+    HRESULT AddGroup(const Group& group) override {
+        return S_OK;
+    };
 };

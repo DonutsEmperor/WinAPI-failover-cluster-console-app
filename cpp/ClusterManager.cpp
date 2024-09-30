@@ -1,9 +1,3 @@
-#include <windows.h>
-#include <iostream>
-#include <fcntl.h>
-#include <io.h>
-#include "ClusApi.h"
-
 #include "../headers/IClusterManager.h"
 
 #include "ClusterProvider.cpp"
@@ -12,70 +6,80 @@
 #include "GroupProvider.cpp"
 
 class ClusterManager : public IClusterManager {
-    PCluster mCluster;
-
+    PCluster mClusterPtr;
     std::unique_ptr<ClusterProvider> mClusterProvider;
     std::unique_ptr<NodeProvider> mNodeProvider;
     std::unique_ptr<ResourceProvider> mResourceProvider;
     std::unique_ptr<GroupProvider> mGroupProvider;
 
 public:
-    ClusterManager() : mCluster(nullptr) {
-        HCLUSTER hCluster = OpenCluster(NULL);
-        mCluster = new Cluster(hCluster, L"localhost");
-        InitProviders();
+    ClusterManager(const std::wstring* input) : mClusterPtr(nullptr) {
+        if (input == nullptr) {
+            MyOpenCluster(L"localhost");
+        }
+        else {
+            MyOpenCluster(*input);
+        }
     }
-    /*ClusterManager(const std::wstring& clusterName) : mCluster(nullptr) {
-        HCLUSTER hCluster = OpenCluster(clusterName.c_str());
-        mCluster = new Cluster(hCluster, clusterName);
-        InitProviders();
-    }*/
     ~ClusterManager() override {
-        delete mCluster;
+        delete mClusterPtr;
     }
 
-    const ClusterProvider* GetClusterProvider() {
+    void MyCloseCluster() const override {
+        CloseCluster(mClusterPtr->mPCluster);
+    }
+
+    const ClusterProvider* GetClusterProvider() const override {
         return mClusterProvider.get();
     }
 
-    const NodeProvider* GetNodeProvider() {
+    const NodeProvider* GetNodeProvider() const override {
         return mNodeProvider.get();
     }
 
-    const ResourceProvider* GetResourceProvider() {
+    const ResourceProvider* GetResourceProvider() const override {
         return mResourceProvider.get();
     }
 
-    const GroupProvider* GetGroupProvider() {
+    const GroupProvider* GetGroupProvider() const override {
         return mGroupProvider.get();
     }
 
     HRESULT GetResourceTypes(std::list<ResourceType>& clusterResTypes) const override {
-        //clusterResTypes = mCluster->mResTypes;
+        clusterResTypes = mClusterPtr->mResTypes;
         return S_OK;
     }
 
     HRESULT GetNetworks(std::list<Network>& clusterNetworks) const override {
-        //clusterNetworks = mCluster->mNetworks;
+        clusterNetworks = mClusterPtr->mNetworks;
         return S_OK;
     }
 
     HRESULT GetNetInterfaces(std::list<NetInterface>& clusterNetInterfaces) const override {
-        //clusterNetInterfaces = mCluster->mNetInterfaces;
+        clusterNetInterfaces = mClusterPtr->mNetInterfaces;
         return S_OK;
     }
 
     HRESULT GetSharedVolumeList(std::list<SharedVolume>& clusterSharedVolumes) const override {
-        //clusterSharedVolumes = mCluster->mCSVs;
+        clusterSharedVolumes = mClusterPtr->mCSVs;
         return S_OK;
     }
 
 private:
-    HRESULT InitProviders() override {
-        /*mNodeProvider = std::make_unique<NodeProvider>(mCluster);
-        mResourceProvider = std::make_unique<ResourceProvider>(mCluster);
-        mGroupProvider = std::make_unique<GroupProvider>(mCluster);*/
-        return S_OK;
+    void MyOpenCluster(const std::wstring& name) override {
+
+        HCLUSTER hCluster = OpenCluster(name.c_str());
+        if (hCluster == nullptr) {
+            return;
+        }
+        mClusterPtr = new Cluster(hCluster, name);
+    }
+
+    void InitProviders() override {
+        mClusterProvider = std::make_unique<ClusterProvider>(mClusterPtr);
+        mNodeProvider = std::make_unique<NodeProvider>(mClusterPtr);
+        mResourceProvider = std::make_unique<ResourceProvider>(mClusterPtr);
+        mGroupProvider = std::make_unique<GroupProvider>(mClusterPtr);
     }
 };
 
