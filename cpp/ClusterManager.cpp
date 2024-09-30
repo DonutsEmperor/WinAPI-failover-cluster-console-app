@@ -6,6 +6,7 @@
 
 #include "../headers/IClusterManager.h"
 
+#include "ClusterProvider.cpp"
 #include "NodeProvider.cpp"
 #include "ResourceProvider.cpp"
 #include "GroupProvider.cpp"
@@ -13,6 +14,7 @@
 class ClusterManager : public IClusterManager {
     PCluster mCluster;
 
+    std::unique_ptr<ClusterProvider> mClusterProvider;
     std::unique_ptr<NodeProvider> mNodeProvider;
     std::unique_ptr<ResourceProvider> mResourceProvider;
     std::unique_ptr<GroupProvider> mGroupProvider;
@@ -23,48 +25,29 @@ public:
         mCluster = new Cluster(hCluster, L"localhost");
         InitProviders();
     }
+    /*ClusterManager(const std::wstring& clusterName) : mCluster(nullptr) {
+        HCLUSTER hCluster = OpenCluster(clusterName.c_str());
+        mCluster = new Cluster(hCluster, clusterName);
+        InitProviders();
+    }*/
     ~ClusterManager() override {
         delete mCluster;
     }
 
-    HRESULT MyOpenCluster(const std::wstring& clusterName) override {
-
-        HCLUSTER hCluster = OpenCluster(clusterName.c_str());
-        if (hCluster == nullptr) {
-            return E_FAIL;
-        }
-
-        mCluster = new Cluster(hCluster, clusterName);
-        InitProviders();
-        return S_OK;
+    const ClusterProvider* GetClusterProvider() {
+        return mClusterProvider.get();
     }
 
-    void MyCloseCluster() const override {
-        CloseCluster(mCluster->mPCluster);
+    const NodeProvider* GetNodeProvider() {
+        return mNodeProvider.get();
     }
 
-    HCLUSTER GetClusterHandle() const override {
-        return mCluster ? mCluster->mPCluster : nullptr;
+    const ResourceProvider* GetResourceProvider() {
+        return mResourceProvider.get();
     }
 
-    HRESULT GetClusterName(std::wstring& clusterName) const override {
-        clusterName = mCluster->mCName;
-        return S_OK;
-    }
-
-    HRESULT GetClusterState(DWORD* pdwClusterState) const override {
-        if (pdwClusterState == nullptr) {
-            return E_FAIL;
-        }
-
-        DWORD objectErrorCode = GetNodeClusterState(mCluster->mCName.c_str(), pdwClusterState);
-
-        if (!pdwClusterState) {
-            std::wcout << "Error with cluster status!" << std::endl;
-            return HRESULT_FROM_WIN32(objectErrorCode);
-        }
-
-        return S_OK;
+    const GroupProvider* GetGroupProvider() {
+        return mGroupProvider.get();
     }
 
     HRESULT GetResourceTypes(std::list<ResourceType>& clusterResTypes) const override {
@@ -85,18 +68,6 @@ public:
     HRESULT GetSharedVolumeList(std::list<SharedVolume>& clusterSharedVolumes) const override {
         //clusterSharedVolumes = mCluster->mCSVs;
         return S_OK;
-    }
-
-    NodeProvider* GetNodeProvider() {
-        return mNodeProvider.get();
-    }
-
-    ResourceProvider* GetResourceProvider() {
-        return mResourceProvider.get();
-    }
-
-    GroupProvider* GetGroupProvider() {
-        return mGroupProvider.get();
     }
 
 private:

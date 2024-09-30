@@ -7,4 +7,4 @@ public:
     virtual HRESULT AddGroup(const Group&) = 0;
 };
 
-//class GroupProvider;
+class GroupProvider;

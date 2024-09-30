@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\Cluster.cpp" />
+    <ClCompile Include="cpp\ClusterProvider.cpp" />
     <ClCompile Include="cpp\GroupProvider.cpp" />
     <ClCompile Include="cpp\ClusterManager.cpp" />
     <ClCompile Include="cpp\NodeProvider.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="headers\ClusterObject.h" />
     <ClInclude Include="headers\ClusterObjectProps.h" />
     <ClInclude Include="headers\Group.h" />
+    <ClInclude Include="headers\IClusterProvider.h" />
     <ClInclude Include="headers\IGroupProvider.h" />
     <ClInclude Include="headers\IClusterManager.h" />
     <ClInclude Include="headers\INodeProvider.h" />
@@ -43,7 +45,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{bf266854-5b0d-44d1-96cf-e9cc0684be12}</ProjectGuid>
-    <RootNamespace>ConsoleProjectForClusters</RootNamespace>
+    <RootNamespace>WinAPI-failover-cluster</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,6 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

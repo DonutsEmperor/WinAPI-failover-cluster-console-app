@@ -7,4 +7,4 @@ public:
     virtual HRESULT GetNodeStatus(const std::wstring&, DWORD*) const = 0;
 };
 
-//class NodeProvider;
+class NodeProvider;

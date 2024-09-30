@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{5667f308-2dfe-4c64-b598-53c45335ad0f}</ProjectGuid>
-    <RootNamespace>TestConsoleApp</RootNamespace>
+    <RootNamespace>TestApplication</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
