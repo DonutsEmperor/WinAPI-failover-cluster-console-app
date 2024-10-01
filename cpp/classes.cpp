@@ -1,8 +1,10 @@
 #include <list>
 #include <vector>
 #include <variant>
+#include <memory>
 #include <iostream>
 #include <string>
+#include <iterator>
 #include "..//headers/classes.h"
 
 // Define fetchNodes function after the Node class has been declared
@@ -138,8 +140,9 @@ enum MyDiskType {
 
 struct MyDiskInfo {
     DWORD dwType;
-    std::variant<DWORD, WCHAR*> data;
+    std::variant<DWORD, std::wstring> data;
 };
+
 HRESULT Resource::GetClusterDiskInfo()
 {
     mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
@@ -171,10 +174,14 @@ HRESULT Resource::GetClusterDiskInfo()
         const BYTE* ptr = reinterpret_cast<BYTE*>(pBuffer);
         const BYTE* end = ptr + size;
 
+        // first step
+
         DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
 
         std::wcout << "FIRST BYTES " << std::hex << dw << std::dec << std::endl;
         std::wcout << "FIRST VALUE " << *dw << std::endl;
+
+        std::wcout << std::endl;
 
         MyDiskInfo mDI = MyDiskInfo();
 
@@ -186,7 +193,9 @@ HRESULT Resource::GetClusterDiskInfo()
                 CLUSPROP_DWORD* prop = reinterpret_cast<CLUSPROP_DWORD*>(const_cast<BYTE*>(ptr));
                 mDI.data = prop->dw;
 
-                ptr += sizeof(CLUSPROP_DWORD) + sizeof(mDI.data);
+                DWORD shift = prop->cbLength;
+                ptr += sizeof(CLUSPROP_VALUE) + shift;
+                std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
                 break;
             }
 
@@ -198,10 +207,10 @@ HRESULT Resource::GetClusterDiskInfo()
 
                 std::wcout << "Data: " << prop->sz << std::endl;
                 std::wcout << "Lenght: " << prop->cbLength << std::endl;
-                std::wcout << "SizeOf: " << sizeof(mDI.data) << std::endl;
-                std::wcout << "SizeOf struct:" << sizeof(CLUSPROP_SZ) << std::endl;
 
-                ptr += sizeof(CLUSPROP_SZ) + sizeof(mDI.data);
+                DWORD shift = prop->cbLength;
+                ptr += sizeof(CLUSPROP_VALUE) + shift;
+                std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
                 break;
             }
 
@@ -210,11 +219,94 @@ HRESULT Resource::GetClusterDiskInfo()
                 return S_FALSE;
         }
 
-        std::wstring data;
+        std::wstring* str = std::get_if<std::wstring>(&mDI.data);
+        DWORD* number = std::get_if<DWORD>(&mDI.data);
 
         std::wcout << "Type: " << mDI.dwType << std::endl;
 
+        if (str) {
+            std::wcout << "Variant Name wstring: " << *str << std::endl;
+            std::wcout << "Variant size wstring: " << str->length() * sizeof(WCHAR) << std::endl;
+        }
+
+        if (number)
+            std::wcout << "Variant Name dword: " << *number << std::endl;
+
         std::wcout << std::endl;
+
+        // second step
+
+        while (ptr) {
+
+            DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
+
+            std::wcout << "FIRST BYTES " << std::hex << dw << std::dec << std::endl;
+            std::wcout << "FIRST VALUE " << *dw << std::endl;
+
+            std::wcout << std::endl;
+
+            switch ((CLUSTER_PROPERTY_SYNTAX)*dw)
+            {
+                case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_SCSI_ADDRESS: //pass
+                {
+                    CLUSPROP_SCSI_ADDRESS* prop = reinterpret_cast<CLUSPROP_SCSI_ADDRESS*>(const_cast<BYTE*>(ptr));
+
+                    std::wcout << "Dw?: " << prop->dw << std::endl;
+                    std::wcout << "Lun: " << prop->Lun << std::endl;
+                    std::wcout << "PathId: " << prop->PathId << std::endl;
+                    std::wcout << "PortNumber: " << prop->PortNumber << std::endl;
+                    std::wcout << "TargetId: " << prop->TargetId << std::endl;
+
+                    ptr += sizeof(CLUSPROP_SCSI_ADDRESS);
+                    std::wcout << "shift of " << sizeof(CLUSPROP_SCSI_ADDRESS) << " bytes" << std::endl;
+                    break;
+                }
+                case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_SIZE: //pass  
+                {
+                    CLUSPROP_ULARGE_INTEGER* prop = reinterpret_cast<CLUSPROP_ULARGE_INTEGER*>(const_cast<BYTE*>(ptr));
+                    std::wcout << "QuadPart: " << prop->li.QuadPart << std::endl;
+                    std::wcout << "HighPart: " << prop->li.HighPart << std::endl;
+
+                    DWORD shift = prop->cbLength;
+                    ptr += sizeof(CLUSPROP_VALUE) + shift;
+                    std::wcout << "shift of " << sizeof(ULARGE_INTEGER) + shift << " bytes" << std::endl;
+                    break;
+                }
+                case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_NUMBER: //pass
+                {
+                    CLUSPROP_DISK_NUMBER* prop = reinterpret_cast<CLUSPROP_DISK_NUMBER*>(const_cast<BYTE*>(ptr));
+                    std::wcout << "DiskNumber: " << prop->dw << std::endl;
+
+                    DWORD shift = prop->cbLength;
+                    ptr += sizeof(CLUSPROP_VALUE) + shift;
+                    std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + sizeof(DWORD) << " bytes" << std::endl;
+                    break;
+                }
+                case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_PARTITION_INFO_EX:
+                {
+                    CLUSPROP_PARTITION_INFO_EX* prop = reinterpret_cast<CLUSPROP_PARTITION_INFO_EX*>(const_cast<BYTE*>(ptr));
+                    std::wcout << "DeviceNumber: " << prop->DeviceNumber << std::endl;
+
+                    DWORD shift = prop->cbLength;
+                    ptr += sizeof(CLUSPROP_VALUE) + shift;
+                    std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
+                    break;
+                }
+                case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_ENDMARK:
+                {
+                    std::wcout << "Correct finish? " << std::endl;
+                    return S_OK;
+                }
+
+            default:
+                std::wcout << "kill yourself" << std::endl;
+                std::wcout << std::endl;
+
+                return S_FALSE;
+            }
+
+            std::wcout << std::endl;
+        }
 
         return S_OK;
     }
