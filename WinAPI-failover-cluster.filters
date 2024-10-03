@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="scr">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include\models">
+      <UniqueIdentifier>{e219f2f3-f113-4a55-b807-4788c2af86db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\models\general">
+      <UniqueIdentifier>{ab65e4d5-4764-49d1-ae9f-8d9bed671aac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scr\models">
+      <UniqueIdentifier>{cf095ba6-76e2-4af7-aeeb-3fbdecdea016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scr\implementations">
+      <UniqueIdentifier>{5b737bbf-b88e-4fca-9574-e833039b4643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\interfaces">
+      <UniqueIdentifier>{94f1e76a-3caf-4b64-8f72-f9509d64c0a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\main.cpp">
+      <Filter>scr</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GroupProvider.cpp">
+      <Filter>scr\implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ClusterManager.cpp">
+      <Filter>scr\implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NodeProvider.cpp">
+      <Filter>scr\implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ResourceProvider.cpp">
+      <Filter>scr\implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cluster.cpp">
+      <Filter>scr\models</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Resources.cpp">
+      <Filter>scr\models</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\IClusterManager.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IGroupProvider.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\INodeProvider.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IResourceProvider.h">
+      <Filter>include\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Cluster.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Resource.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Group.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Node.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ClusterObject.h">
+      <Filter>include\models\general</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ClusterObjectProps.h">
+      <Filter>include\models\general</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

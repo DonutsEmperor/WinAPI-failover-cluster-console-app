@@ -1,4 +1,12 @@
+#pragma once
+
+#include <windows.h>
 #include <iostream>
+#include "ClusApi.h"
+
+#include "headers/Cluster.h"
+
+#pragma comment(lib, "ClusAPI.lib")
 
 enum ErrorCode {
     NoError = 0,

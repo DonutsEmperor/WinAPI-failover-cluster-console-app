@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{5667f308-2dfe-4c64-b598-53c45335ad0f}</ProjectGuid>
-    <RootNamespace>TestConsoleApp</RootNamespace>
+    <RootNamespace>TestApplication</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -129,6 +129,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\Cluster.h" />
+    <ClInclude Include="headers\ClusterObject.h" />
+    <ClInclude Include="headers\ClusterObjectProps.h" />
+    <ClInclude Include="headers\Group.h" />
+    <ClInclude Include="headers\Node.h" />
+    <ClInclude Include="headers\Resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
