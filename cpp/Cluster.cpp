@@ -1,7 +1,3 @@
-#include <windows.h>
-#include <string>
-
-#include "ClusApi.h"
 #include "../headers/Cluster.h"
 
 void Cluster::FetchEnumerations(const DWORD typeofEnum) 

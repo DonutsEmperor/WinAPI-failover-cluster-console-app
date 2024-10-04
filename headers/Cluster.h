@@ -5,6 +5,9 @@
 #include <iostream>
 #include <fcntl.h>
 #include <io.h>
+#include <string>
+#include <variant>
+#include <vector>
 
 #include "ClusApi.h"
 
@@ -48,6 +51,7 @@ public:
 
 private:
     void FetchEnumerations(const DWORD typeofEnum);
+
     void HandleNode(PCLUSTER_ENUM_ITEM pItem);
     void HandleGroup(PCLUSTER_ENUM_ITEM pItem);
     void HandleResource(PCLUSTER_ENUM_ITEM pItem);

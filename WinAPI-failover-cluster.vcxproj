@@ -23,6 +23,7 @@
     <ClCompile Include="cpp\ClusterProvider.cpp" />
     <ClCompile Include="cpp\GroupProvider.cpp" />
     <ClCompile Include="cpp\ClusterManager.cpp" />
+    <ClCompile Include="cpp\Logger.cpp" />
     <ClCompile Include="cpp\NodeProvider.cpp" />
     <ClCompile Include="cpp\ResourceProvider.cpp" />
     <ClCompile Include="cpp\main.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="headers\IClusterProvider.h" />
     <ClInclude Include="headers\IGroupProvider.h" />
     <ClInclude Include="headers\IClusterManager.h" />
+    <ClInclude Include="headers\ILogger.h" />
     <ClInclude Include="headers\INodeProvider.h" />
     <ClInclude Include="headers\IResourceProvider.h" />
     <ClInclude Include="headers\Node.h" />

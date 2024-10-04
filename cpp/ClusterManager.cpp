@@ -1,12 +1,16 @@
 #include "../headers/IClusterManager.h"
+#include "../headers/ILogger.h"
 
 #include "ClusterProvider.cpp"
 #include "NodeProvider.cpp"
 #include "ResourceProvider.cpp"
 #include "GroupProvider.cpp"
+#include "Logger.cpp"
 
 class ClusterManager : public IClusterManager {
     PCluster mClusterPtr;
+
+    std::unique_ptr<LoggerFactory> mLoggerFactory;
     std::unique_ptr<ClusterProvider> mClusterProvider;
     std::unique_ptr<NodeProvider> mNodeProvider;
     std::unique_ptr<ResourceProvider> mResourceProvider;
@@ -27,6 +31,10 @@ public:
 
     void MyCloseCluster() const override {
         CloseCluster(mClusterPtr->mPCluster);
+    }
+
+    const LoggerFactory* GetLoggerFactory() const override {
+        return mLoggerFactory.get();
     }
 
     const ClusterProvider* GetClusterProvider() const override {
@@ -76,6 +84,7 @@ private:
     }
 
     void InitProviders() override {
+        mLoggerFactory = std::make_unique<LoggerFactory>();
         mClusterProvider = std::make_unique<ClusterProvider>(mClusterPtr);
         mNodeProvider = std::make_unique<NodeProvider>(mClusterPtr);
         mResourceProvider = std::make_unique<ResourceProvider>(mClusterPtr);

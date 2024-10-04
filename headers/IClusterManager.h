@@ -5,6 +5,7 @@
 #include "IGroupProvider.h"
 #include "IResourceProvider.h"
 #include "INodeProvider.h"
+#include "ILogger.h"
 
 class IClusterManager 
 {
@@ -12,6 +13,7 @@ public:
     virtual ~IClusterManager() {};
     virtual void MyOpenCluster(const std::wstring&) = 0;
 
+    virtual const LoggerFactory* GetLoggerFactory() const = 0;
     virtual const IClusterProvider* GetClusterProvider() const = 0;
     virtual const INodeProvider* GetNodeProvider() const = 0;
     virtual const IResourceProvider* GetResourceProvider() const = 0;
