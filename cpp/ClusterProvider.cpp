@@ -1,33 +1,29 @@
-#include "../headers/Cluster.h"
-#include "../headers/IClusterProvider.h"
+#include "Cluster.h"
+#include "IClusterProvider.h"
 
-class ClusterProvider : public IClusterProvider {
-    PCluster mCluster;
-public:
-    ClusterProvider(PCluster pCluster) : mCluster(pCluster) {}
-    ~ClusterProvider() override {};
+ClusterProvider::ClusterProvider(PCluster pCluster) : mCluster(pCluster) {}
+ClusterProvider::~ClusterProvider() {};
 
-    HCLUSTER GetClusterHandle() const override {
-        return mCluster ? mCluster->mPCluster : nullptr;
+HCLUSTER ClusterProvider::GetClusterHandle() const {
+    return mCluster ? mCluster->mPCluster : nullptr;
+}
+
+HRESULT ClusterProvider::GetClusterName(std::wstring& clusterName) const {
+    clusterName = mCluster->mCName;
+    return S_OK;
+}
+
+HRESULT ClusterProvider::GetClusterState(DWORD* pdwClusterState) const {
+    if (pdwClusterState == nullptr) {
+        return E_FAIL;
     }
 
-    HRESULT GetClusterName(std::wstring& clusterName) const override {
-        clusterName = mCluster->mCName;
-        return S_OK;
+    DWORD objectErrorCode = GetNodeClusterState(mCluster->mCName.c_str(), pdwClusterState);
+
+    if (!pdwClusterState) {
+        std::wcout << "Error with cluster status!" << std::endl;
+        return HRESULT_FROM_WIN32(objectErrorCode);
     }
 
-    HRESULT GetClusterState(DWORD* pdwClusterState) const override {
-        if (pdwClusterState == nullptr) {
-            return E_FAIL;
-        }
-
-        DWORD objectErrorCode = GetNodeClusterState(mCluster->mCName.c_str(), pdwClusterState);
-
-        if (!pdwClusterState) {
-            std::wcout << "Error with cluster status!" << std::endl;
-            return HRESULT_FROM_WIN32(objectErrorCode);
-        }
-
-        return S_OK;
-    }
-};
+    return S_OK;
+}

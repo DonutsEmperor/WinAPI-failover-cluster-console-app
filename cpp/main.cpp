@@ -1,5 +1,4 @@
-#include "../headers/IClusterManager.h"
-#include "ClusterManager.cpp"
+#include "IClusterManager.h"
 
 #pragma comment(lib, "ClusAPI.lib")
 
@@ -24,17 +23,23 @@ int main()
     std::wstring input = GetClusterNodeName();
     std::wcout << "You've entered in cluster: [" << input << "]!\n";
 
-    //const ClusterManager manager(&input);
-    //const LoggerFactory* logFactory = manager.GetLoggerFactory();
+    const ClusterManager manager(&input);
+    const LoggerFactory* logFactory = manager.GetLoggerFactory();
+    const NodeProvider* nodeProvider = manager.GetNodeProvider();
 
-    //const NodeProvider* nodeProvider = manager.GetNodeProvider();
+    std::wcout << "\n LISTING OF HAMSTER !\n\n";
 
-    //std::list<Node> nodes;
-    //nodeProvider->GetClusterNodes(nodes);
+    std::list<Node> nodes;
+    nodeProvider->GetClusterNodes(nodes);
 
-    //auto logger = logFactory->CreateLogger<Node>();
-    //logger->LogList(nodes);
-    ////logger->(manager);
+    auto logger = logFactory->CreateLogger<Node>();
+
+    // Attempt to cast the ILogger<Node> to ItemLogger<Node>
+    //auto itemLog = dynamic_cast<ItemLogger<Node>*>(logger.get());
+    //itemLog->DisplayClusterInfo(manager);
+    logger->LogList(nodes);
+
+    return 0;
 
     ////DisplayClusterInfo(manager);
 

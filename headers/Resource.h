@@ -32,8 +32,8 @@ private:
     HRESULT FetchResourceType();
     HRESULT FetchClusterDiskInfo();
 
-    void DeterminationOf_FileStructure(MyDiskInfo& info, const BYTE* ptr) const;
-    void MakingUp_DiskValueList(MyDiskInfo& info, const BYTE* ptr) const;
+    void DeterminationOf_FileStructure(MyDiskInfo& , const BYTE*&) const;
+    void MakingUp_DiskValueList(MyDiskInfo& , const BYTE*&) const;
 
 
 };

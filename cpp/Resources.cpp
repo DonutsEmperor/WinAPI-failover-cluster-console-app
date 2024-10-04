@@ -1,4 +1,4 @@
-#include "../headers/Cluster.h"
+#include "Cluster.h"
 
 HRESULT Resource::FetchResourceType()
 {
@@ -70,9 +70,12 @@ HRESULT Resource::FetchClusterDiskInfo()
     return S_FALSE;
 }
 
-void Resource::DeterminationOf_FileStructure(MyDiskInfo& mDI, const BYTE* ptr) const {
+void Resource::DeterminationOf_FileStructure(MyDiskInfo& mDI, const BYTE*& ptr) const {
 
     DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
+
+    std::wcout << "FIRST BYTES " << std::hex << dw << std::dec << std::endl;
+    std::wcout << "FIRST VALUE " << *dw << std::endl;
 
     switch ((CLUSTER_PROPERTY_SYNTAX)*dw)
     {
@@ -124,7 +127,7 @@ void Resource::DeterminationOf_FileStructure(MyDiskInfo& mDI, const BYTE* ptr) c
     std::wcout << std::endl;
 }
 
-void Resource::MakingUp_DiskValueList(MyDiskInfo& mDI, const BYTE* ptr) const {
+void Resource::MakingUp_DiskValueList(MyDiskInfo& mDI, const BYTE*& ptr) const {
     while (ptr) {
 
         DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
@@ -189,6 +192,7 @@ void Resource::MakingUp_DiskValueList(MyDiskInfo& mDI, const BYTE* ptr) const {
         case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_ENDMARK:
         {
             std::wcout << "Correct finish? " << std::endl;
+            return;
         }
         }
 

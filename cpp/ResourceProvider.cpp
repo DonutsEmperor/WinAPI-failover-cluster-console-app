@@ -1,35 +1,31 @@
-#include "../headers/Cluster.h"
-#include "../headers/IResourceProvider.h"
+#include "Cluster.h"
+#include "IResourceProvider.h"
 
-class ResourceProvider : public IResourceProvider {
-    PCluster mCluster;
-public:
-    ResourceProvider(PCluster pCluster) : mCluster(pCluster) {}
-    ~ResourceProvider() override {}
+ResourceProvider::ResourceProvider(PCluster pCluster) : mCluster(pCluster) {}
+ResourceProvider::~ResourceProvider() {}
 
-    HRESULT GetClusterResources(std::list<Resource>& resources) const override {
-        resources = mCluster->mResources;
-        return S_OK;
-    }
+HRESULT ResourceProvider::GetClusterResources(std::list<Resource>& resources) const {
+    resources = mCluster->mResources;
+    return S_OK;
+}
 
-    HRESULT GetResourceDisksInfo(MyDiskInfo& diskInfo, Resource& resource) const {
-        if (resource.resTypeName != L"Physical Disk")
-            return S_FALSE;
+HRESULT ResourceProvider::GetResourceDisksInfo(MyDiskInfo& diskInfo, Resource& resource) const {
+    if (resource.resTypeName != L"Physical Disk")
+        return S_FALSE;
 
-        std::list<Resource>::iterator required = std::find_if(mCluster->mResources.begin(),
-            mCluster->mResources.end(), [resource](const Resource& res) {
+    std::list<Resource>::iterator required = std::find_if(mCluster->mResources.begin(),
+        mCluster->mResources.end(), [resource](const Resource& res) {
             return (res.properties.itemId == resource.properties.itemId);
         });
 
-        if (required != mCluster->mResources.end()) {
-            diskInfo = required->diskInfo;
-            return S_OK;
-        }
-
-        return S_FALSE;
+    if (required != mCluster->mResources.end()) {
+        diskInfo = required->diskInfo;
+        return S_OK;
     }
 
-    HRESULT AllocateResource(const Resource& resource) override {
-        return S_OK;
-    };
+    return S_FALSE;
+}
+
+HRESULT ResourceProvider::AllocateResource(const Resource& resource) {
+    return S_OK;
 };

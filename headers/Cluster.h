@@ -8,6 +8,7 @@
 #include <string>
 #include <variant>
 #include <vector>
+#include <functional>
 
 #include "ClusApi.h"
 
