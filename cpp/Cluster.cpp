@@ -4,14 +4,14 @@ void Cluster::FetchEnumerations(const DWORD typeofEnum)
 {
     HCLUSENUMEX hClusterEnum = ClusterOpenEnumEx(mPCluster, typeofEnum, nullptr);
     DWORD objectErrorCode;
+    DWORD itemSize = 1;
 
-    LPDWORD itemSize = new DWORD(1);
-    PCLUSTER_ENUM_ITEM pItem = (PCLUSTER_ENUM_ITEM)malloc(*itemSize);
+    PCLUSTER_ENUM_ITEM pItem = (PCLUSTER_ENUM_ITEM)malloc(itemSize);
     DWORD enumLength = ClusterGetEnumCountEx(hClusterEnum), iterator = 0;
 
     while (iterator < enumLength) 
     {
-        objectErrorCode = ClusterEnumEx(hClusterEnum, iterator++, pItem, itemSize);
+        objectErrorCode = ClusterEnumEx(hClusterEnum, iterator++, pItem, &itemSize);
 
         if (objectErrorCode == ERROR_SUCCESS) 
         {
@@ -36,14 +36,13 @@ void Cluster::FetchEnumerations(const DWORD typeofEnum)
         }
         else if (objectErrorCode == ERROR_MORE_DATA) 
         {
-            pItem = (PCLUSTER_ENUM_ITEM)realloc(pItem, *itemSize);
+            pItem = (PCLUSTER_ENUM_ITEM)realloc(pItem, itemSize);
             iterator--;
             continue;
         }
         break;
     }
 
-    delete itemSize;
     free(pItem);
     ClusterCloseEnumEx(hClusterEnum);
 }

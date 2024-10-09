@@ -8,12 +8,9 @@
 #include "ItemLogger.h"
 
 ClusterManager::ClusterManager(const std::wstring* input) : mClusterPtr(nullptr) {
-    if (input == nullptr) {
-        MyOpenCluster(L"localhost");
-    }
-    else {
-        MyOpenCluster(*input);
-    }
+    if (input == nullptr) (L"localhost");
+    else MyOpenCluster(*input);
+    InitProviders();
 }
 ClusterManager::~ClusterManager() {
     delete mClusterPtr;

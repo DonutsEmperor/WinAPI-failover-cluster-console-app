@@ -21,9 +21,7 @@ HRESULT ClusterProvider::GetClusterState(DWORD* pdwClusterState) const {
     DWORD objectErrorCode = GetNodeClusterState(mCluster->mCName.c_str(), pdwClusterState);
 
     if (!pdwClusterState) {
-        std::wcout << "Error with cluster status!" << std::endl;
         return HRESULT_FROM_WIN32(objectErrorCode);
     }
-
     return S_OK;
 }

@@ -11,75 +11,40 @@ void SetConsoleMode()
 
 std::wstring GetClusterNodeName()
 {
-    std::wcout << "Hello Enter ClusterNodeName!\n";
+    std::wcout << "Hello Enter ClusterNodeName!" << std::endl;
     std::wstring input;
     std::wcin >> input;
+    std::wcout << "You've entered in cluster: [" << input << "]!" << std::endl;
     return input;
 }
 
 int main() 
 {
     SetConsoleMode();
+
     std::wstring input = GetClusterNodeName();
-    std::wcout << "You've entered in cluster: [" << input << "]!\n";
 
     const ClusterManager manager(&input);
     const LoggerFactory* logFactory = manager.GetLoggerFactory();
+
     const NodeProvider* nodeProvider = manager.GetNodeProvider();
-
-    std::wcout << "\n LISTING OF HAMSTER !\n\n";
-
     std::list<Node> nodes;
     nodeProvider->GetClusterNodes(nodes);
+    auto loggerNodes = logFactory->CreateLogger<Node>();
+    loggerNodes->DisplayClusterInfo(manager);
+    loggerNodes->LogList(nodes);
 
-    auto logger = logFactory->CreateLogger<Node>();
+    const ResourceProvider* resProvider = manager.GetResourceProvider();
+    std::list<Resource> resources;
+    resProvider->GetClusterResources(resources);
+    auto loggerRes = logFactory->CreateLogger<Resource>();
+    loggerRes->LogList(resources);
 
-    // Attempt to cast the ILogger<Node> to ItemLogger<Node>
-    //auto itemLog = dynamic_cast<ItemLogger<Node>*>(logger.get());
-    //itemLog->DisplayClusterInfo(manager);
-    logger->LogList(nodes);
-
-    return 0;
-
-    ////DisplayClusterInfo(manager);
-
-    //const NodeProvider* nodeProvider = manager.GetNodeProvider();
-    //std::list<Node> nodes;
-    //nodeProvider->GetClusterNodes(nodes);
-    ////DisplayNodes(nodes);
-
-    //const ResourceProvider* resourceProvider = manager.GetResourceProvider();
-    //std::list<Resource> resources;
-    //resourceProvider->GetClusterResources(resources);
-
-    //for (Resource& res : resources)
-    //{
-    //    MyDiskInfo diskInfo;
-    //    resourceProvider->GetResourceDisksInfo(diskInfo, res);
-    //    //DisplayResourceDiskInfo(diskInfo);
-    //}
-    //DisplayResources(resources);
-
-    //const GroupProvider* groupProvider = manager.GetGroupProvider();
-    //std::list<Group> groups;
-    //groupProvider->GetClusterGroups(groups);
-    //DisplayGroups(groups);
-
-    //std::list<ResourceType> restypes;
-    //manager.GetResourceTypes(restypes);
-    //DisplayResTypes(restypes);
-
-    //std::list<Network> networks;
-    //manager.GetNetworks(networks);
-    //DisplayNetworks(networks);
-
-    //std::list<NetInterface> netinterfaces;
-    //manager.GetNetInterfaces(netinterfaces);
-    //DisplayNetInterfaces(netinterfaces);
-
-    //std::list<SharedVolume> sharedvolumes;
-    //manager.GetSharedVolumeList(sharedvolumes);
-    //DisplaySharedVolumes(sharedvolumes);
+    const GroupProvider* groupProvider = manager.GetGroupProvider();
+    std::list<Group> groups;
+    groupProvider->GetClusterGroups(groups);
+    auto loggerGroups = logFactory->CreateLogger<Group>();
+    loggerGroups->LogList(groups);
 
     return 0;
 }
