@@ -1,13 +1,8 @@
 #include "Cluster.h"
-#include "INodeProvider.h"
+#include "NodeProvider.h"
 
-NodeProvider::NodeProvider(PCluster pCluster) : mCluster(pCluster) {}
-NodeProvider::~NodeProvider() {};
+NodeProvider::NodeProvider(PCluster cluster) : Provider<Node>(cluster) {}
 
-HRESULT NodeProvider::GetClusterNodes(std::list<Node>& nodes) const {
-    nodes = mCluster->mNodes;
-    return S_OK;
-}
 HRESULT NodeProvider::GetNodeStatus(const std::wstring& nodeName, DWORD* status) const {
     return S_OK;
 }

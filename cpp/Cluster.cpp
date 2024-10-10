@@ -1,8 +1,32 @@
 #include "Cluster.h"
 
+Cluster::Cluster(const HCLUSTER pCluster, const std::wstring& clusterName) : mHandler(pCluster), mCName(clusterName) {
+    UpdateLists();
+}
+
+Cluster::~Cluster() {
+    CloseCluster(mHandler);
+}
+
+void Cluster::UpdateLists() {
+    ClearLists();
+    FetchEnumerations(CLUSTER_ENUM_NODE);
+    FetchEnumerations(CLUSTER_ENUM_GROUP);
+    FetchEnumerations(CLUSTER_ENUM_RESOURCE);
+    FetchEnumerations(CLUSTER_ENUM_RESTYPE);
+    FetchEnumerations(CLUSTER_ENUM_NETWORK);
+    FetchEnumerations(CLUSTER_ENUM_NETINTERFACE);
+    FetchEnumerations(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
+}
+
+void Cluster::UpdateSpecificList(const DWORD typeofEnum) {
+    ClearSpecificList(typeofEnum);
+    FetchEnumerations((CLUSTER_ENUM)typeofEnum);
+}
+
 void Cluster::FetchEnumerations(const DWORD typeofEnum) 
 {
-    HCLUSENUMEX hClusterEnum = ClusterOpenEnumEx(mPCluster, typeofEnum, nullptr);
+    HCLUSENUMEX hClusterEnum = ClusterOpenEnumEx(mHandler, typeofEnum, nullptr);
     DWORD objectErrorCode;
     DWORD itemSize = 1;
 
@@ -45,6 +69,36 @@ void Cluster::FetchEnumerations(const DWORD typeofEnum)
 
     free(pItem);
     ClusterCloseEnumEx(hClusterEnum);
+}
+
+void Cluster::ClearLists() {
+    mNodes.clear();
+    mGroups.clear();
+    mResources.clear();
+    mResTypes.clear();
+    mNetworks.clear();
+    mNetInterfaces.clear();
+    mCSVs.clear();
+}
+
+void Cluster::ClearSpecificList(const DWORD typeofEnum) {
+    switch (typeofEnum)
+    {
+        case CLUSTER_ENUM_NODE:
+            mNodes.clear(); break;
+        case CLUSTER_ENUM_GROUP:
+            mGroups.clear(); break;
+        case CLUSTER_ENUM_RESOURCE:
+            mResources.clear(); break;
+        case CLUSTER_ENUM_RESTYPE:
+            mResTypes.clear(); break;
+        case CLUSTER_ENUM_NETWORK:
+            mNetworks.clear(); break;
+        case CLUSTER_ENUM_NETINTERFACE:
+            mNetInterfaces.clear(); break;
+        case CLUSTER_ENUM_SHARED_VOLUME_RESOURCE:
+            mCSVs.clear(); break;
+    }
 }
 
 void Cluster::HandleNode(const PCLUSTER_ENUM_ITEM pItem) 

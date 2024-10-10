@@ -1,12 +1,12 @@
 #pragma once
 
-class ClusterObject {
+class BaseObject {
 protected:
     DWORD mErrorHandler;
 public:
     PCluster cluster;
-    ClusterObjectProps properties;
+    Properties properties;
 
-    ClusterObject(const PCluster hCluster, const PCLUSTER_ENUM_ITEM lProperties)
+    BaseObject(const PCluster hCluster, const PCLUSTER_ENUM_ITEM lProperties)
         : cluster(hCluster), properties(*lProperties), mErrorHandler(0) {}
 };

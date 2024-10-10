@@ -13,7 +13,7 @@ class SharedVolume; class Network; class NetInterface; class ResourceType;
 
 class Cluster {
 public:
-    const HCLUSTER mPCluster;
+    const HCLUSTER mHandler;
     const std::wstring mCName;
 
     //Containers for cluster items
@@ -26,7 +26,7 @@ public:
     std::list<SharedVolume> mCSVs;
 
     Cluster(const HCLUSTER pCluster, const std::wstring& clusterName)
-        : mPCluster(pCluster), mCName(clusterName) {
+        : mHandler(pCluster), mCName(clusterName) {
         FetchEnumerations(CLUSTER_ENUM_NODE);
         FetchEnumerations(CLUSTER_ENUM_GROUP);
         FetchEnumerations(CLUSTER_ENUM_RESOURCE);
@@ -37,7 +37,7 @@ public:
     }
 
     ~Cluster() {
-        CloseCluster(mPCluster);
+        CloseCluster(mHandler);
     }
 
 private:
@@ -55,26 +55,26 @@ private:
 #include "Resource.h"
 #include "Group.h"
 
-class ResourceType : public ClusterObject {
+class ResourceType : public BaseObject {
 public:
     ResourceType(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class Network : public ClusterObject {
+class Network : public BaseObject {
 public:
     Network(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class NetInterface : public ClusterObject {
+class NetInterface : public BaseObject {
 public:
     NetInterface(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class SharedVolume : public ClusterObject {
+class SharedVolume : public BaseObject {
 public:
     SharedVolume(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };

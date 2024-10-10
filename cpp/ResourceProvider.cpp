@@ -1,13 +1,7 @@
 #include "Cluster.h"
-#include "IResourceProvider.h"
+#include "ResourceProvider.h"
 
-ResourceProvider::ResourceProvider(PCluster pCluster) : mCluster(pCluster) {}
-ResourceProvider::~ResourceProvider() {}
-
-HRESULT ResourceProvider::GetClusterResources(std::list<Resource>& resources) const {
-    resources = mCluster->mResources;
-    return S_OK;
-}
+ResourceProvider::ResourceProvider(PCluster cluster) : Provider<Resource>(cluster) {}
 
 HRESULT ResourceProvider::GetResourceDisksInfo(MyDiskInfo& diskInfo, Resource& resource) const {
     if (resource.resTypeName != L"Physical Disk")
@@ -25,7 +19,3 @@ HRESULT ResourceProvider::GetResourceDisksInfo(MyDiskInfo& diskInfo, Resource& r
 
     return S_FALSE;
 }
-
-HRESULT ResourceProvider::AllocateResource(const Resource& resource) {
-    return S_OK;
-};

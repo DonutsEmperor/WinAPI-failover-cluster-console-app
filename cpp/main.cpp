@@ -1,5 +1,4 @@
-#include "IClusterManager.h"
-
+#include "Manager.h"
 #pragma comment(lib, "ClusAPI.lib")
 
 void SetConsoleMode() 
@@ -21,30 +20,32 @@ std::wstring GetClusterNodeName()
 int main() 
 {
     SetConsoleMode();
-
     std::wstring input = GetClusterNodeName();
 
-    const ClusterManager manager(&input);
-    const LoggerFactory* logFactory = manager.GetLoggerFactory();
+    //const Manager manager(&input);
+    //const LoggerFactory* logFactory = manager.GetLoggerFactory();
 
-    const NodeProvider* nodeProvider = manager.GetNodeProvider();
-    std::list<Node> nodes;
-    nodeProvider->GetClusterNodes(nodes);
-    auto loggerNodes = logFactory->CreateLogger<Node>();
-    loggerNodes->DisplayClusterInfo(manager);
-    loggerNodes->LogList(nodes);
+    //auto clusLogger = logFactory->CreateLogger<Cluster>();
+    //ClusterLogger* specificClusLogger = dynamic_cast<ClusterLogger*>(clusLogger.get());
+    //specificClusLogger->DisplayClusterInfo(manager);
 
-    const ResourceProvider* resProvider = manager.GetResourceProvider();
-    std::list<Resource> resources;
-    resProvider->GetClusterResources(resources);
-    auto loggerRes = logFactory->CreateLogger<Resource>();
-    loggerRes->LogList(resources);
+    //const NodeProvider* nodeProvider = manager.GetNodeProvider();
+    //std::list<Node> nodes;
+    //nodeProvider->GetClusterNodes(nodes);
+    //auto loggerNodes = logFactory->CreateLogger<Node>();
+    //loggerNodes->LogList(nodes);
 
-    const GroupProvider* groupProvider = manager.GetGroupProvider();
-    std::list<Group> groups;
-    groupProvider->GetClusterGroups(groups);
-    auto loggerGroups = logFactory->CreateLogger<Group>();
-    loggerGroups->LogList(groups);
+    //const ResourceProvider* resProvider = manager.GetResourceProvider();
+    //std::list<Resource> resources;
+    //resProvider->GetClusterResources(resources);
+    //auto loggerRes = logFactory->CreateLogger<Resource>();
+    //loggerRes->LogList(resources);
+
+    //const GroupProvider* groupProvider = manager.GetGroupProvider();
+    //std::list<Group> groups;
+    //groupProvider->GetClusterGroups(groups);
+    //auto loggerGroups = logFactory->CreateLogger<Group>();
+    //loggerGroups->LogList(groups);
 
     return 0;
 }

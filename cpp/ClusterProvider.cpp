@@ -1,11 +1,10 @@
 #include "Cluster.h"
-#include "IClusterProvider.h"
+#include "ClusterProvider.h"
 
-ClusterProvider::ClusterProvider(PCluster pCluster) : mCluster(pCluster) {}
-ClusterProvider::~ClusterProvider() {};
+ClusterProvider::ClusterProvider(PCluster cluster) : Provider<Cluster>(cluster) {}
 
 HCLUSTER ClusterProvider::GetClusterHandle() const {
-    return mCluster ? mCluster->mPCluster : nullptr;
+    return mCluster ? mCluster->mHandler : nullptr;
 }
 
 HRESULT ClusterProvider::GetClusterName(std::wstring& clusterName) const {
@@ -24,4 +23,12 @@ HRESULT ClusterProvider::GetClusterState(DWORD* pdwClusterState) const {
         return HRESULT_FROM_WIN32(objectErrorCode);
     }
     return S_OK;
+}
+
+HRESULT ClusterProvider::UpdateClusterLists() const {
+    mCluster->UpdateLists();
+}
+
+HRESULT ClusterProvider::UpdateClusterListByType(DWORD type) const {
+    mCluster->UpdateSpecificList(type);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class ClusterObjectProps {
+class Properties {
 public:
     DWORD version;
     DWORD type;
@@ -9,8 +9,8 @@ public:
     DWORD byteSizeName;
     std::wstring itemName;
 
-    ClusterObjectProps() : version(0), type(0), byteSizeId(0), byteSizeName(0) {}
-    ClusterObjectProps(const CLUSTER_ENUM_ITEM& winStruct)
+    Properties() : version(0), type(0), byteSizeId(0), byteSizeName(0) {}
+    Properties(const CLUSTER_ENUM_ITEM& winStruct)
         : version(winStruct.dwVersion), type(winStruct.dwType),
         byteSizeId(winStruct.cbId), byteSizeName(winStruct.cbName) {
         itemId = winStruct.lpszId;

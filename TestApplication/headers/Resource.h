@@ -1,12 +1,12 @@
 #pragma once
 
-class Resource : public ClusterObject {
+class Resource : public BaseObject {
     HRESOURCE mPResource;
 public:
     std::wstring resTypeName;
 
     Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) 
-        : ClusterObject(pCluster, pWinStruct) {
+        : BaseObject(pCluster, pWinStruct) {
         mErrorHandler = GetClusterType();
     }
     ~Resource() {}

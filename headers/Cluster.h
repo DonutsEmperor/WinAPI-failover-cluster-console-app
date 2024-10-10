@@ -18,12 +18,12 @@ typedef Cluster* PCluster;
 class Resource; class Node; class Group;
 class SharedVolume; class Network; class NetInterface; class ResourceType;
 
-#include "ClusterObjectProps.h"
-#include "ClusterObject.h"
+#include "Properties.h"
+#include "BaseObject.h"
 
 class Cluster {
 public:
-    const HCLUSTER mPCluster;
+    const HCLUSTER mHandler;
     const std::wstring mCName;
 
     // Containers for cluster items
@@ -35,31 +35,23 @@ public:
     std::list<NetInterface> mNetInterfaces;
     std::list<SharedVolume> mCSVs;
 
-    Cluster(const HCLUSTER pCluster, const std::wstring& clusterName)
-        : mPCluster(pCluster), mCName(clusterName) {
-        FetchEnumerations(CLUSTER_ENUM_NODE);
-        FetchEnumerations(CLUSTER_ENUM_GROUP);
-        FetchEnumerations(CLUSTER_ENUM_RESOURCE);
-        FetchEnumerations(CLUSTER_ENUM_RESTYPE);
-        FetchEnumerations(CLUSTER_ENUM_NETWORK);
-        FetchEnumerations(CLUSTER_ENUM_NETINTERFACE);
-        FetchEnumerations(CLUSTER_ENUM_SHARED_VOLUME_RESOURCE);
-    }
+    Cluster(const HCLUSTER, const std::wstring&);
+    ~Cluster();
 
-    ~Cluster() {
-        CloseCluster(mPCluster);
-    }
-
+    void UpdateLists();
+    void UpdateSpecificList(const DWORD);
 private:
-    void FetchEnumerations(const DWORD typeofEnum);
+    void ClearLists();
+    void ClearSpecificList(const DWORD);
+    void FetchEnumerations(const DWORD);
 
-    void HandleNode(PCLUSTER_ENUM_ITEM pItem);
-    void HandleGroup(PCLUSTER_ENUM_ITEM pItem);
-    void HandleResource(PCLUSTER_ENUM_ITEM pItem);
-    void HandleResType(PCLUSTER_ENUM_ITEM pItem);
-    void HandleNetwork(PCLUSTER_ENUM_ITEM pItem);
-    void HandleNetInterface(PCLUSTER_ENUM_ITEM pItem);
-    void HandleSharedVolume(PCLUSTER_ENUM_ITEM pItem);
+    void HandleNode(PCLUSTER_ENUM_ITEM );
+    void HandleGroup(PCLUSTER_ENUM_ITEM );
+    void HandleResource(PCLUSTER_ENUM_ITEM );
+    void HandleResType(PCLUSTER_ENUM_ITEM );
+    void HandleNetwork(PCLUSTER_ENUM_ITEM );
+    void HandleNetInterface(PCLUSTER_ENUM_ITEM );
+    void HandleSharedVolume(PCLUSTER_ENUM_ITEM );
 };
 
 #include "Node.h"
@@ -67,26 +59,26 @@ private:
 #include "Group.h"
 
 // Cluster-specific classes
-class ResourceType : public ClusterObject {
+class ResourceType : public BaseObject {
 public:
     ResourceType(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class Network : public ClusterObject {
+class Network : public BaseObject {
 public:
     Network(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class NetInterface : public ClusterObject {
+class NetInterface : public BaseObject {
 public:
     NetInterface(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };
 
-class SharedVolume : public ClusterObject {
+class SharedVolume : public BaseObject {
 public:
     SharedVolume(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
-        : ClusterObject(pCluster, pWinStruct) {}
+        : BaseObject(pCluster, pWinStruct) {}
 };

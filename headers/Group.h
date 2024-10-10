@@ -1,13 +1,13 @@
 #pragma once
 
-class Group : public ClusterObject {
+class Group : public BaseObject {
     HGROUP mPGroup;
 public:
     std::wstring csvName;
 
     Group(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) 
-        : ClusterObject(pCluster, pWinStruct) {
-        mPGroup = OpenClusterGroup(pCluster->mPCluster, pWinStruct->lpszName);
+        : BaseObject(pCluster, pWinStruct) {
+        mPGroup = OpenClusterGroup(pCluster->mHandler, pWinStruct->lpszName);
     }
     ~Group() {
         CloseClusterGroup(mPGroup);

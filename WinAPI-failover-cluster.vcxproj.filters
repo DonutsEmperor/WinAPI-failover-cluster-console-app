@@ -7,7 +7,7 @@
     <ClCompile Include="cpp\Resources.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\ClusterManager.cpp">
+    <ClCompile Include="cpp\Manager.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
     <ClCompile Include="cpp\main.cpp">
@@ -25,10 +25,13 @@
     <ClCompile Include="cpp\ResourceProvider.cpp">
       <Filter>Source Files\Services\Providers</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\ItemLogger.cpp">
+    <ClCompile Include="cpp\ClusterLogger.cpp">
       <Filter>Source Files\Services\Loggers</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\LoggerFactory.cpp">
+    <ClCompile Include="cpp\NodeLogger.cpp">
+      <Filter>Source Files\Services\Loggers</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ResourceLogger.cpp">
       <Filter>Source Files\Services\Loggers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,35 +48,50 @@
     <ClInclude Include="headers\Resource.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="headers\IClusterProvider.h">
+    <ClInclude Include="headers\ClusterProvider.h">
       <Filter>Header Files\Services\Providers</Filter>
     </ClInclude>
-    <ClInclude Include="headers\IGroupProvider.h">
+    <ClInclude Include="headers\NodeProvider.h">
       <Filter>Header Files\Services\Providers</Filter>
     </ClInclude>
-    <ClInclude Include="headers\INodeProvider.h">
+    <ClInclude Include="headers\ResourceProvider.h">
       <Filter>Header Files\Services\Providers</Filter>
     </ClInclude>
-    <ClInclude Include="headers\IResourceProvider.h">
-      <Filter>Header Files\Services\Providers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\ItemLogger.h">
-      <Filter>Header Files\Services\Loggers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\LoggerFactory.h">
-      <Filter>Header Files\Services\Loggers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\IClusterManager.h">
-      <Filter>Header Files\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\ClusterObject.h">
+    <ClInclude Include="headers\BaseObject.h">
       <Filter>Header Files\Models\Base</Filter>
     </ClInclude>
-    <ClInclude Include="headers\ClusterObjectProps.h">
+    <ClInclude Include="headers\Properties.h">
       <Filter>Header Files\Models\Base</Filter>
     </ClInclude>
     <ClInclude Include="headers\ILogger.h">
       <Filter>Header Files\Services\Loggers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Logger.h">
+      <Filter>Header Files\Services\Loggers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\LoggerFactory.h">
+      <Filter>Header Files\Services\Loggers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ClusterLogger.h">
+      <Filter>Header Files\Services\Loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\NodeLogger.h">
+      <Filter>Header Files\Services\Loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ResourceLogger.h">
+      <Filter>Header Files\Services\Loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\IProvider.h">
+      <Filter>Header Files\Services\Providers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\ProviderFactory.h">
+      <Filter>Header Files\Services\Providers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Manager.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Provider.h">
+      <Filter>Header Files\Services\Providers\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,14 +125,31 @@
     <Filter Include="Header Files\Services\Loggers">
       <UniqueIdentifier>{42aa64f2-9088-4564-b11a-3d410af1be43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Services\Loggers">
-      <UniqueIdentifier>{2c427509-09ed-41a9-b09d-41e8f338a37b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Models\Base">
       <UniqueIdentifier>{c6128bcb-71c5-4fd6-bb82-875f91bab73f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Services\Loggers\Base">
       <UniqueIdentifier>{d8452ff8-4afe-4e46-adfb-2819fad44064}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Services\Providers\Base">
+      <UniqueIdentifier>{90a1358a-8e72-43c0-8617-8642775847c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Loggers">
+      <UniqueIdentifier>{b5bf0a12-0372-455a-a059-4425180d2213}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="headers\Provider.inl">
+      <Filter>Header Files\Services\Providers\Base</Filter>
+    </None>
+    <None Include="headers\ProviderFactory.inl">
+      <Filter>Header Files\Services\Providers\Base</Filter>
+    </None>
+    <None Include="headers\Logger.inl">
+      <Filter>Header Files\Services\Loggers\Base</Filter>
+    </None>
+    <None Include="headers\LoggerFactory.inl">
+      <Filter>Header Files\Services\Loggers\Base</Filter>
+    </None>
   </ItemGroup>
 </Project>

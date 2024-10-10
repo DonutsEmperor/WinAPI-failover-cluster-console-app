@@ -20,31 +20,43 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\Cluster.cpp" />
-    <ClCompile Include="cpp\ItemLogger.cpp" />
+    <ClCompile Include="cpp\ClusterLogger.cpp" />
     <ClCompile Include="cpp\ClusterProvider.cpp" />
     <ClCompile Include="cpp\GroupProvider.cpp" />
-    <ClCompile Include="cpp\ClusterManager.cpp" />
-    <ClCompile Include="cpp\LoggerFactory.cpp" />
+    <ClCompile Include="cpp\Manager.cpp" />
+    <ClCompile Include="cpp\NodeLogger.cpp" />
     <ClCompile Include="cpp\NodeProvider.cpp" />
+    <ClCompile Include="cpp\ResourceLogger.cpp" />
     <ClCompile Include="cpp\ResourceProvider.cpp" />
     <ClCompile Include="cpp\main.cpp" />
     <ClCompile Include="cpp\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Cluster.h" />
-    <ClInclude Include="headers\ItemLogger.h" />
-    <ClInclude Include="headers\ClusterObject.h" />
-    <ClInclude Include="headers\ClusterObjectProps.h" />
+    <ClInclude Include="headers\ClusterLogger.h" />
+    <ClInclude Include="headers\Logger.h" />
+    <ClInclude Include="headers\BaseObject.h" />
+    <ClInclude Include="headers\Properties.h" />
     <ClInclude Include="headers\Group.h" />
-    <ClInclude Include="headers\IClusterProvider.h" />
-    <ClInclude Include="headers\IGroupProvider.h" />
-    <ClInclude Include="headers\IClusterManager.h" />
+    <ClInclude Include="headers\ClusterProvider.h" />
+    <ClInclude Include="headers\IProvider.h" />
     <ClInclude Include="headers\ILogger.h" />
-    <ClInclude Include="headers\INodeProvider.h" />
-    <ClInclude Include="headers\IResourceProvider.h" />
+    <ClInclude Include="headers\Manager.h" />
+    <ClInclude Include="headers\NodeProvider.h" />
+    <ClInclude Include="headers\Provider.h" />
+    <ClInclude Include="headers\ResourceProvider.h" />
     <ClInclude Include="headers\LoggerFactory.h" />
     <ClInclude Include="headers\Node.h" />
+    <ClInclude Include="headers\NodeLogger.h" />
+    <ClInclude Include="headers\ProviderFactory.h" />
     <ClInclude Include="headers\Resource.h" />
+    <ClInclude Include="headers\ResourceLogger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="headers\Logger.inl" />
+    <None Include="headers\LoggerFactory.inl" />
+    <None Include="headers\Provider.inl" />
+    <None Include="headers\ProviderFactory.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

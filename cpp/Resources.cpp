@@ -1,8 +1,15 @@
 #include "Cluster.h"
 
+Resource::Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct)
+    : BaseObject(pCluster, pWinStruct) {
+    mErrorHandler = FetchResourceType();
+    mErrorHandler = FetchClusterDiskInfo();
+}
+Resource::~Resource() {}
+
 HRESULT Resource::FetchResourceType()
 {
-    mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
+    mPResource = OpenClusterResource(cluster->mHandler, properties.itemName.c_str());
 
     DWORD initialSizeOfBuffer = 64, returnedSizeOfBuffer = 0;
     LPVOID buffer = malloc(sizeof(WCHAR) * initialSizeOfBuffer);
@@ -39,7 +46,7 @@ HRESULT Resource::FetchResourceType()
 
 HRESULT Resource::FetchClusterDiskInfo()
 {
-    mPResource = OpenClusterResource(cluster->mPCluster, properties.itemName.c_str());
+    mPResource = OpenClusterResource(cluster->mHandler, properties.itemName.c_str());
 
     DWORD size = 0;
     DWORD errorcode = ClusterResourceControl(mPResource, nullptr,

@@ -15,18 +15,14 @@ struct MyDiskInfo {
     CLUSPROP_DISK_NUMBER diskNumb;
 };
 
-class Resource : public ClusterObject {
+class Resource : public BaseObject {
     HRESOURCE mPResource;
 public:
     std::wstring resTypeName;
     MyDiskInfo diskInfo;
 
-    Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) 
-        : ClusterObject(pCluster, pWinStruct) {
-        mErrorHandler = FetchResourceType();
-        mErrorHandler = FetchClusterDiskInfo();
-    }
-    ~Resource() {}
+    Resource(const PCluster, const PCLUSTER_ENUM_ITEM);
+    ~Resource();
 
 private:
     HRESULT FetchResourceType();
@@ -34,6 +30,4 @@ private:
 
     void DeterminationOf_FileStructure(MyDiskInfo& , const BYTE*&) const;
     void MakingUp_DiskValueList(MyDiskInfo& , const BYTE*&) const;
-
-
 };
