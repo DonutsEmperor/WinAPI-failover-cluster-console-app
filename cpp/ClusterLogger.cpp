@@ -2,7 +2,7 @@
 #include <ClusterLogger.h>
 
 void ClusterLogger::DisplayClusterInfo(const Manager& manager) const {
-    const ClusterProvider* provider = dynamic_cast<ClusterProvider*>(const_cast<IProvider<Cluster>*>(manager.GetClusterProvider()));
+    const ClusterProvider* provider = manager.GetClusterProvider();
 
     HCLUSTER hCluster = provider->GetClusterHandle();
     std::wstring clusName;

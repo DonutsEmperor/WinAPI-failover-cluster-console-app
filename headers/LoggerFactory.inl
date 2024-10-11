@@ -11,10 +11,10 @@ static std::unique_ptr<ILogger<T>> LoggerFactory::CreateLogger() {
     else if constexpr (std::is_same_v<T, Resource>) {
         return std::make_unique<ResourceLogger>();
     }
-    /*else if constexpr (std::is_same_v<T, Group>) {
-        return std::make_unique<NodeLogger>();
+    else if constexpr (std::is_same_v<T, Group>) {
+        return std::make_unique<GroupLogger>();
     }
-    else if constexpr (std::is_same_v<T, ResourceType>) {
+    /*else if constexpr (std::is_same_v<T, ResourceType>) {
         return std::make_unique<NodeLogger>();
     }
     else if constexpr (std::is_same_v<T, Network>) {
@@ -28,6 +28,6 @@ static std::unique_ptr<ILogger<T>> LoggerFactory::CreateLogger() {
     }*/
     else {
         //static_assert(false, "Unsupported logger type");
-        return std::unique_ptr<ILogger<T>>();
+        return nullptr;
     }
 }

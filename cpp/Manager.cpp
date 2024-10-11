@@ -4,6 +4,7 @@ Manager::Manager(const std::wstring* input) {
     DefOpenCluster(input);
     InitFabrics();
     InitProviders();
+    InitLoggers();
 }
 
 Manager::~Manager() {
@@ -19,68 +20,73 @@ void Manager::InitProviders() {
     mClusterProvider = mProviderFactory->CreateProvider<Cluster>(mCluster.get());
     mNodeProvider = mProviderFactory->CreateProvider<Node>(mCluster.get());
     mResourceProvider = mProviderFactory->CreateProvider<Resource>(mCluster.get());
+    mGroupProvider = mProviderFactory->CreateProvider<Group>(mCluster.get());
 }
 
 void Manager::InitLoggers() {
     mClusterLogger = mLoggerFactory->CreateLogger<Cluster>();
     mNodeLogger = mLoggerFactory->CreateLogger<Node>();
     mResourceLogger = mLoggerFactory->CreateLogger<Resource>();
+    mGroupLogger = mLoggerFactory->CreateLogger<Group>();
 }
 
-const Logger<Cluster>* Manager::GetClusterLogger() const {
+const ClusterLogger* Manager::GetClusterLogger() const {
     return dynamic_cast<ClusterLogger*>(mClusterLogger.get());
 }
 
-const Logger<Node>* Manager::GetNodeLogger() const {
+const NodeLogger* Manager::GetNodeLogger() const {
     return dynamic_cast<NodeLogger*>(mNodeLogger.get());
 }
 
-const Logger<Resource>* Manager::GetResourceLogger() const {
+const ResourceLogger* Manager::GetResourceLogger() const {
     return dynamic_cast<ResourceLogger*>(mResourceLogger.get());
 }
 
-
-const IProvider<Cluster>* Manager::GetClusterProvider() const {
-    return mClusterProvider.get();
+const GroupLogger* Manager::GetGroupLogger() const {
+    return dynamic_cast<GroupLogger*>(mGroupLogger.get());
 }
 
-const IProvider<Node>* Manager::GetNodeProvider() const {
-    return mNodeProvider.get();
+
+const ClusterProvider* Manager::GetClusterProvider() const {
+    return dynamic_cast<ClusterProvider*>(mClusterProvider.get());
 }
 
-const IProvider<Resource>* Manager::GetResourceProvider() const {
-    return mResourceProvider.get();
+const NodeProvider* Manager::GetNodeProvider() const {
+    return dynamic_cast<NodeProvider*>(mNodeProvider.get());
 }
 
-//const ClusterLogger* Manager::GetClusterLogger() const {
+const ResourceProvider* Manager::GetResourceProvider() const {
+    return dynamic_cast<ResourceProvider*>(mResourceProvider.get());
+}
+
+const GroupProvider* Manager::GetGroupProvider() const {
+    return dynamic_cast<GroupProvider*>(mGroupProvider.get());
+}
+
+// more abstractive implementation
+//const Logger<Cluster>* Manager::GetClusterLogger() const {
 //    return dynamic_cast<ClusterLogger*>(mClusterLogger.get());
 //}
 //
-//const NodeLogger* Manager::GetNodeLogger() const {
+//const Logger<Node>* Manager::GetNodeLogger() const {
 //    return dynamic_cast<NodeLogger*>(mNodeLogger.get());
 //}
 //
-//const ResourceLogger* Manager::GetResourceLogger() const {
+//const Logger<Resource>* Manager::GetResourceLogger() const {
 //    return dynamic_cast<ResourceLogger*>(mResourceLogger.get());
 //}
 //
 //
-//const ClusterProvider* Manager::GetClusterProvider() const {
-//    return dynamic_cast<ClusterProvider*>(mClusterProvider.get());
+//const IProvider<Cluster>* Manager::GetClusterProvider() const {
+//    return mClusterProvider.get();
 //}
 //
-//const NodeProvider* Manager::GetNodeProvider() const {
-//    return dynamic_cast<NodeProvider*>(mNodeProvider.get());
+//const IProvider<Node>* Manager::GetNodeProvider() const {
+//    return mNodeProvider.get();
 //}
 //
-//const ResourceProvider* Manager::GetResourceProvider() const {
-//    return dynamic_cast<ResourceProvider*>(mResourceProvider.get());
-//}
-
-/////////////////////////////////////////////////////////////////////////////
-
-//const GroupProvider* Manager::GetGroupProvider() const {
-//    return dynamic_cast<ClusterProvider*>(mClusterProvider.get());
+//const IProvider<Resource>* Manager::GetResourceProvider() const {
+//    return mResourceProvider.get();
 //}
 
 HRESULT Manager::GetResourceTypes(std::list<ResourceType>& clusterResTypes) const {

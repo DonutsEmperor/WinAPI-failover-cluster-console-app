@@ -22,6 +22,7 @@
     <ClCompile Include="cpp\Cluster.cpp" />
     <ClCompile Include="cpp\ClusterLogger.cpp" />
     <ClCompile Include="cpp\ClusterProvider.cpp" />
+    <ClCompile Include="cpp\GroupLogger.cpp" />
     <ClCompile Include="cpp\GroupProvider.cpp" />
     <ClCompile Include="cpp\Manager.cpp" />
     <ClCompile Include="cpp\NodeLogger.cpp" />
@@ -34,6 +35,8 @@
   <ItemGroup>
     <ClInclude Include="headers\Cluster.h" />
     <ClInclude Include="headers\ClusterLogger.h" />
+    <ClInclude Include="headers\GroupLogger.h" />
+    <ClInclude Include="headers\GroupProvider.h" />
     <ClInclude Include="headers\Logger.h" />
     <ClInclude Include="headers\BaseObject.h" />
     <ClInclude Include="headers\Properties.h" />

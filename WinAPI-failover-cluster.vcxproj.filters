@@ -34,6 +34,9 @@
     <ClCompile Include="cpp\ResourceLogger.cpp">
       <Filter>Source Files\Services\Loggers</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\GroupLogger.cpp">
+      <Filter>Source Files\Services\Loggers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Cluster.h">
@@ -92,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="headers\Provider.h">
       <Filter>Header Files\Services\Providers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\GroupLogger.h">
+      <Filter>Header Files\Services\Loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\GroupProvider.h">
+      <Filter>Header Files\Services\Providers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

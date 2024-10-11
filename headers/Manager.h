@@ -7,6 +7,7 @@
 #include "ClusterLogger.h"
 #include "NodeLogger.h"
 #include "ResourceLogger.h"
+#include "GroupLogger.h"
 #include "LoggerFactory.h"
 
 #include "IProvider.h"
@@ -14,6 +15,7 @@
 #include "ClusterProvider.h"
 #include "NodeProvider.h"
 #include "ResourceProvider.h"
+#include "GroupProvider.h"
 #include "ProviderFactory.h"
 
 class Manager {
@@ -22,10 +24,12 @@ class Manager {
     std::unique_ptr<IProvider<Cluster>> mClusterProvider;
     std::unique_ptr<IProvider<Node>> mNodeProvider;
     std::unique_ptr<IProvider<Resource>> mResourceProvider;
+    std::unique_ptr<IProvider<Group>> mGroupProvider;
 
     std::unique_ptr<ILogger<Cluster>> mClusterLogger;
     std::unique_ptr<ILogger<Node>> mNodeLogger;
     std::unique_ptr<ILogger<Resource>> mResourceLogger;
+    std::unique_ptr<ILogger<Group>> mGroupLogger;
 
     std::unique_ptr<ProviderFactory> mProviderFactory;
     std::unique_ptr<LoggerFactory> mLoggerFactory;
@@ -35,14 +39,16 @@ public:
     ~Manager();
 
     // Getters for loggers
-    const Logger<Cluster>* GetClusterLogger() const;
-    const Logger<Node>* GetNodeLogger() const;
-    const Logger<Resource>* GetResourceLogger() const;
+    const ClusterLogger* GetClusterLogger() const;
+    const NodeLogger* GetNodeLogger() const;
+    const ResourceLogger* GetResourceLogger() const;
+    const GroupLogger* GetGroupLogger() const;
 
     // Getters for providers
-    const IProvider<Cluster>* GetClusterProvider() const;
-    const IProvider<Node>* GetNodeProvider() const;
-    const IProvider<Resource>* GetResourceProvider() const;
+    const ClusterProvider* GetClusterProvider() const;
+    const NodeProvider* GetNodeProvider() const;
+    const ResourceProvider* GetResourceProvider() const;
+    const GroupProvider* GetGroupProvider() const;
 
     HRESULT GetResourceTypes(std::list<ResourceType>& ) const;
     HRESULT GetNetworks(std::list<Network>& ) const;

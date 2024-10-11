@@ -22,30 +22,30 @@ int main()
     SetConsoleMode();
     std::wstring input = GetClusterNodeName();
 
-    //const Manager manager(&input);
-    //const LoggerFactory* logFactory = manager.GetLoggerFactory();
+    const Manager manager(&input);
 
-    //auto clusLogger = logFactory->CreateLogger<Cluster>();
-    //ClusterLogger* specificClusLogger = dynamic_cast<ClusterLogger*>(clusLogger.get());
-    //specificClusLogger->DisplayClusterInfo(manager);
+    const ClusterProvider* clusProvider = manager.GetClusterProvider();
+    const ClusterLogger* clusLogger = manager.GetClusterLogger();
+    //clusProvider->GetClusterName();
+    clusLogger->DisplayClusterInfo(manager);
 
-    //const NodeProvider* nodeProvider = manager.GetNodeProvider();
-    //std::list<Node> nodes;
-    //nodeProvider->GetClusterNodes(nodes);
-    //auto loggerNodes = logFactory->CreateLogger<Node>();
-    //loggerNodes->LogList(nodes);
+    const NodeProvider* nodeProvider = manager.GetNodeProvider();
+    const NodeLogger* nodeLogger = manager.GetNodeLogger();
+    std::list<Node> nodes;
+    nodeProvider->GetAll(nodes);
+    nodeLogger->LogListSpecial(nodes);
 
-    //const ResourceProvider* resProvider = manager.GetResourceProvider();
-    //std::list<Resource> resources;
-    //resProvider->GetClusterResources(resources);
-    //auto loggerRes = logFactory->CreateLogger<Resource>();
-    //loggerRes->LogList(resources);
+    const ResourceProvider* resourceProvider = manager.GetResourceProvider();
+    const ResourceLogger* resourceLogger = manager.GetResourceLogger();
+    std::list<Resource> resources;
+    resourceProvider->GetAll(resources);
+    resourceLogger->LogListBase(resources);
 
-    //const GroupProvider* groupProvider = manager.GetGroupProvider();
-    //std::list<Group> groups;
-    //groupProvider->GetClusterGroups(groups);
-    //auto loggerGroups = logFactory->CreateLogger<Group>();
-    //loggerGroups->LogList(groups);
+    const GroupProvider* groupProvider = manager.GetGroupProvider();
+    const GroupLogger* groupLogger = manager.GetGroupLogger();
+    std::list<Group> groups;
+    groupProvider->GetAll(groups);
+    groupLogger->LogListSpecial(groups);
 
     return 0;
 }

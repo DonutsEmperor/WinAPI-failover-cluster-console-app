@@ -10,10 +10,10 @@ static std::unique_ptr<IProvider<T>> ProviderFactory::CreateProvider(PCluster cl
     else if constexpr (std::is_same_v<T, Resource>) {
         return std::make_unique<ResourceProvider>(cluster);
     }
-    /*else if constexpr (std::is_same_v<T, Group>) {
-        return std::make_unique<NodeLogger>();
+    else if constexpr (std::is_same_v<T, Group>) {
+        return std::make_unique<GroupProvider>(cluster);
     }
-    else if constexpr (std::is_same_v<T, ResourceType>) {
+    /*else if constexpr (std::is_same_v<T, ResourceType>) {
         return std::make_unique<NodeLogger>();
     }
     else if constexpr (std::is_same_v<T, Network>) {
@@ -27,6 +27,6 @@ static std::unique_ptr<IProvider<T>> ProviderFactory::CreateProvider(PCluster cl
     }*/
     else {
         //static_assert(false, "Unsupported provider type");
-        return std::unique_ptr<IProvider<T>>();
+        return nullptr;
     }
 }
