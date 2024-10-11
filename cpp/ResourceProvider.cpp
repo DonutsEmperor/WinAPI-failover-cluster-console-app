@@ -3,7 +3,7 @@
 
 ResourceProvider::ResourceProvider(PCluster cluster) : Provider<Resource>(cluster) {}
 
-HRESULT ResourceProvider::GetResourceDisksInfo(MyDiskInfo& diskInfo, Resource& resource) const {
+HRESULT ResourceProvider::GetResourceDisksInfo(Resource& resource) const {
     if (resource.resTypeName != L"Physical Disk")
         return S_FALSE;
 

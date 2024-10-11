@@ -3,5 +3,7 @@
 
 class GroupProvider : public Provider<Group> {
 public:
-    explicit GroupProvider(PCluster cluster);
+    explicit GroupProvider(PCluster);
+
+    void AddNewGroup(std::wstring, CLUSGROUP_TYPE);
 };
