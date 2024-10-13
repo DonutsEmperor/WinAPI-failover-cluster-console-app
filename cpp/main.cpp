@@ -26,7 +26,10 @@ int main()
 
     const ClusterProvider* clusProvider = manager.GetClusterProvider();
     const ClusterLogger* clusLogger = manager.GetClusterLogger();
-    //clusProvider->GetClusterName();
+
+    std::wstring cluster;
+    clusProvider->GetClusterName(cluster);
+    std::wcout << cluster << std::endl;
     clusLogger->DisplayClusterInfo(manager);
 
     const NodeProvider* nodeProvider = manager.GetNodeProvider();
@@ -40,6 +43,13 @@ int main()
     std::list<Resource> resources;
     resourceProvider->GetAll(resources);
     resourceLogger->LogListBase(resources);
+    resources.clear();
+
+    resourceProvider->GetPhysicalDiskResources(resources);
+    for (auto it : resources) {
+        resourceLogger->LogBase(it);
+        resourceLogger->LogPhysicalDiskInfo(it.diskInfo.get());
+    }
 
     const GroupProvider* groupProvider = manager.GetGroupProvider();
     const GroupLogger* groupLogger = manager.GetGroupLogger();

@@ -66,125 +66,96 @@ HRESULT Resource::FetchClusterDiskInfo()
         const BYTE* end = ptr + size;
 
         DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
-        MyDiskInfo mDI = MyDiskInfo();
+        PhysicalDiskInfo mDI = PhysicalDiskInfo();
 
         DeterminationOf_FileStructure(mDI, ptr);
         MakingUp_DiskValueList(mDI, ptr);
 
-        diskInfo = mDI;
+        diskInfo = std::make_shared<PhysicalDiskInfo>(mDI);
         return S_OK;
     }
     return S_FALSE;
 }
 
-void Resource::DeterminationOf_FileStructure(MyDiskInfo& mDI, const BYTE*& ptr) const {
+void Resource::DeterminationOf_FileStructure(PhysicalDiskInfo& pDI, const BYTE*& ptr) const {
 
     DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
 
-    /*std::wcout << "FIRST BYTES " << std::hex << dw << std::dec << std::endl;
-    std::wcout << "FIRST VALUE " << *dw << std::endl;*/
-
     switch ((CLUSTER_PROPERTY_SYNTAX)*dw)
     {
-    case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_SIGNATURE:
-    {
-        mDI.dwType = MyDiskType::MRB;
-        CLUSPROP_DWORD* prop = reinterpret_cast<CLUSPROP_DWORD*>(const_cast<BYTE*>(ptr));
-        mDI.data = prop->dw;
+        case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_SIGNATURE:
+        {
+            pDI.dwType = DiskType::MRB;
+            CLUSPROP_DWORD* prop = reinterpret_cast<CLUSPROP_DWORD*>(const_cast<BYTE*>(ptr));
+            pDI.data = prop->dw;
 
-        DWORD shift = prop->cbLength;
-        ptr += sizeof(CLUSPROP_VALUE) + shift;
-        //std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
-        break;
+            DWORD shift = prop->cbLength;
+            ptr += sizeof(CLUSPROP_VALUE) + shift;
+            break;
+        }
+        case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_GUID:
+        {
+            pDI.dwType = DiskType::GPT;
+            CLUSPROP_SZ* prop = reinterpret_cast<CLUSPROP_SZ*>(const_cast<BYTE*>(ptr));
+            pDI.data = prop->sz;
+
+            DWORD shift = prop->cbLength;
+            ptr += sizeof(CLUSPROP_VALUE) + prop->cbLength;
+            break;
+        }
+        default:
+            pDI.dwType = DiskType::UNKNOWN;
+            break;
     }
-
-    case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_GUID:
-    {
-        mDI.dwType = MyDiskType::GPT;
-        CLUSPROP_SZ* prop = reinterpret_cast<CLUSPROP_SZ*>(const_cast<BYTE*>(ptr));
-        mDI.data = prop->sz;
-
-        /*std::wcout << "Data: " << prop->sz << std::endl;
-        std::wcout << "Lenght: " << prop->cbLength << std::endl;*/
-
-        DWORD shift = prop->cbLength;
-        ptr += sizeof(CLUSPROP_VALUE) + shift;
-        //std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
-        break;
-    }
-
-    default:
-        mDI.dwType = MyDiskType::UNKNOWN;
-        break;
-    }
-
-    std::wstring* str = std::get_if<std::wstring>(&mDI.data);
-    DWORD* number = std::get_if<DWORD>(&mDI.data);
 }
 
-void Resource::MakingUp_DiskValueList(MyDiskInfo& mDI, const BYTE*& ptr) const {
+void Resource::MakingUp_DiskValueList(PhysicalDiskInfo& pDI, const BYTE*& ptr) const {
     while (ptr) {
-
         DWORD* dw = reinterpret_cast<DWORD*>(const_cast<BYTE*>(ptr));
-
-        //std::wcout << "FIRST BYTES " << std::hex << dw << std::dec << std::endl;
-        //std::wcout << "FIRST VALUE " << *dw << std::endl;
 
         switch ((CLUSTER_PROPERTY_SYNTAX)*dw)
         {
             case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_SCSI_ADDRESS:
             {
                 CLUSPROP_SCSI_ADDRESS* prop = reinterpret_cast<CLUSPROP_SCSI_ADDRESS*>(const_cast<BYTE*>(ptr));
-                mDI.scsi = *prop;
-
-                /*std::wcout << "Dw?: " << prop->dw << std::endl;
-                std::wcout << "Lun: " << prop->Lun << std::endl;
-                std::wcout << "PathId: " << prop->PathId << std::endl;
-                std::wcout << "PortNumber: " << prop->PortNumber << std::endl;
-                std::wcout << "TargetId: " << prop->TargetId << std::endl;*/
+                pDI.scsi = *prop;
 
                 ptr += sizeof(CLUSPROP_SCSI_ADDRESS);
-                //std::wcout << "shift of " << sizeof(CLUSPROP_SCSI_ADDRESS) << " bytes" << std::endl;
                 break;
             }
             case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_SIZE:
             {
                 CLUSPROP_ULARGE_INTEGER* prop = reinterpret_cast<CLUSPROP_ULARGE_INTEGER*>(const_cast<BYTE*>(ptr));
-                mDI.diskSize = *prop;
-
-                //std::wcout << "QuadPart: " << prop->li.QuadPart << std::endl;
-                //std::wcout << "HighPart: " << prop->li.HighPart << std::endl;
+                pDI.diskSize = *prop;
 
                 DWORD shift = prop->cbLength;
                 ptr += sizeof(CLUSPROP_VALUE) + shift;
-                //std::wcout << "shift of " << sizeof(ULARGE_INTEGER) + shift << " bytes" << std::endl;
                 break;
             }
             case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_DISK_NUMBER:
             {
                 CLUSPROP_DISK_NUMBER* prop = reinterpret_cast<CLUSPROP_DISK_NUMBER*>(const_cast<BYTE*>(ptr));
-                mDI.diskNumb = *prop;
-
-                //std::wcout << "DiskNumber: " << prop->dw << std::endl;
+                pDI.diskNumb = *prop;
 
                 DWORD shift = prop->cbLength;
                 ptr += sizeof(CLUSPROP_VALUE) + shift;
-                //std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + sizeof(DWORD) << " bytes" << std::endl;
                 break;
             }
             case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_PARTITION_INFO_EX:
             {
                 CLUSPROP_PARTITION_INFO_EX* prop = reinterpret_cast<CLUSPROP_PARTITION_INFO_EX*>(const_cast<BYTE*>(ptr));
-                //std::wcout << "DeviceNumber: " << prop->DeviceNumber << std::endl;
+                pDI.partitionInfo = std::make_shared<CLUSPROP_PARTITION_INFO_EX>(*prop);
 
                 DWORD shift = prop->cbLength;
                 ptr += sizeof(CLUSPROP_VALUE) + shift;
-                //std::wcout << "shift of " << sizeof(CLUSPROP_VALUE) + shift << " bytes" << std::endl;
                 break;
             }
             case CLUSTER_PROPERTY_SYNTAX::CLUSPROP_SYNTAX_ENDMARK:
             {
-                //std::wcout << "Correct finish? " << std::endl;
+                return;
+            }
+            default: {
+                std::wcout << "Memory leakage" << std::endl;
                 return;
             }
         }

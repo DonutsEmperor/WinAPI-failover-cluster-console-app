@@ -3,19 +3,11 @@
 
 ResourceProvider::ResourceProvider(PCluster cluster) : Provider<Resource>(cluster) {}
 
-HRESULT ResourceProvider::GetResourceDisksInfo(Resource& resource) const {
-    if (resource.resTypeName != L"Physical Disk")
-        return S_FALSE;
-
-    std::list<Resource>::iterator required = std::find_if(mCluster->mResources.begin(),
-        mCluster->mResources.end(), [resource](const Resource& res) {
-            return (res.properties.itemId == resource.properties.itemId);
-        });
-
-    if (required != mCluster->mResources.end()) {
-        diskInfo = required->diskInfo;
-        return S_OK;
+HRESULT ResourceProvider::GetPhysicalDiskResources(std::list<Resource>& resources) const {
+    for (auto res : mCluster->mResources) {
+        if (res.resTypeName == L"Physical Disk") {
+            resources.push_back(res);
+        }
     }
-
-    return S_FALSE;
+    return resources.empty() ? S_FALSE : S_OK;
 }

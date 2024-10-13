@@ -4,5 +4,5 @@
 class ResourceProvider : public Provider<Resource> {
 public:
     explicit ResourceProvider(PCluster );
-    HRESULT GetResourceDisksInfo(Resource& ) const;
+    HRESULT GetPhysicalDiskResources(std::list<Resource>& ) const;
 };

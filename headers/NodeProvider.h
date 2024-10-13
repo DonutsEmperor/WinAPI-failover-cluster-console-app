@@ -3,6 +3,6 @@
 
 class NodeProvider : public Provider<Node> {
 public:
-    explicit NodeProvider(PCluster cluster);
-    HRESULT GetNodeStatus(const std::wstring& nodeName, DWORD* status) const;
+    explicit NodeProvider(PCluster );
+    HRESULT GetNodeStatus(const std::wstring& , DWORD* ) const;
 };

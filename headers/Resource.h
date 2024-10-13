@@ -1,25 +1,26 @@
 #pragma once
 
-enum MyDiskType {
+enum DiskType {
     MRB = 1,
     GPT = 2,
     UNKNOWN = 3
 };
 
-struct MyDiskInfo {
+struct PhysicalDiskInfo {
     DWORD dwType;
     std::variant<DWORD, std::wstring> data;
 
     CLUSPROP_SCSI_ADDRESS scsi;
     CLUSPROP_ULARGE_INTEGER diskSize;
     CLUSPROP_DISK_NUMBER diskNumb;
+    std::shared_ptr<CLUSPROP_PARTITION_INFO_EX> partitionInfo;
 };
 
 class Resource : public BaseObject {
     HRESOURCE mPResource;
 public:
     std::wstring resTypeName;
-    MyDiskInfo diskInfo;
+    std::shared_ptr<PhysicalDiskInfo> diskInfo;
 
     Resource(const PCluster, const PCLUSTER_ENUM_ITEM);
     ~Resource();
@@ -28,6 +29,6 @@ private:
     HRESULT FetchResourceType();
     HRESULT FetchClusterDiskInfo();
 
-    void DeterminationOf_FileStructure(MyDiskInfo& , const BYTE*&) const;
-    void MakingUp_DiskValueList(MyDiskInfo& , const BYTE*&) const;
+    void DeterminationOf_FileStructure(PhysicalDiskInfo& , const BYTE*&) const;
+    void MakingUp_DiskValueList(PhysicalDiskInfo& , const BYTE*&) const;
 };

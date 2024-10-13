@@ -3,7 +3,7 @@
 
 class ClusterProvider : public Provider<Cluster>{
 public:
-    explicit ClusterProvider(PCluster cluster);
+    explicit ClusterProvider(PCluster);
 
     HCLUSTER GetClusterHandle() const;
     HRESULT GetClusterName(std::wstring&) const;
