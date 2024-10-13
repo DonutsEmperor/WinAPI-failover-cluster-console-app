@@ -1,5 +1,7 @@
 #pragma once
 
+class ResourceProvider;
+
 enum DiskType {
     MRB = 1,
     GPT = 2,
@@ -31,4 +33,6 @@ private:
 
     void DeterminationOf_FileStructure(PhysicalDiskInfo& , const BYTE*&) const;
     void MakingUp_DiskValueList(PhysicalDiskInfo& , const BYTE*&) const;
+
+    friend class ResourceProvider;
 };

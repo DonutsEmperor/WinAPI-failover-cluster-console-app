@@ -132,3 +132,13 @@ void Manager::DefOpenCluster(const std::wstring* name) {
     mCluster = std::make_unique<Cluster>(handler, output);
 }
 
+
+/////////////////////////////////////////// global manager
+
+//void InitializeGlobalManager(const std::wstring* input) {
+//    g_Manager = std::make_unique<Manager>(input);
+//}
+//
+//Manager* GetGlobalManager() {
+//    return g_Manager.get();
+//}

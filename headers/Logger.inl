@@ -2,9 +2,10 @@
 template <typename T>
 void Logger<T>::LogBase(const T& item) const {
     if constexpr (!std::is_same_v<T, Cluster>) {
-        std::wcout << "Item Id   [" << item.properties.itemId << "]\n";
-        std::wcout << "Item Name [" << item.properties.itemName << "]\n";
-        std::wcout << "Item Size [" << item.properties.byteSizeName << "]\n\n";
+        std::wcout << "Item Id        [" << item.properties.itemId << "]\n";
+        std::wcout << "Item Name      [" << item.properties.itemName << "]\n";
+        std::wcout << "Item Size      [" << item.properties.byteSizeName << "]\n";
+        std::wcout << "Item Version   [" << item.properties.version << "]\n\n";
     }
 }
 

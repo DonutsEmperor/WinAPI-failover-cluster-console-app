@@ -63,3 +63,10 @@ private:
     void InitProviders();
     void InitLoggers();
 };
+
+//////////////////// global Manager
+
+//std::unique_ptr<Manager> g_Manager;
+//
+//void InitializeGlobalManager(const std::wstring* input);
+//Manager* GetGlobalManager();

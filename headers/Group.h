@@ -1,6 +1,9 @@
 #pragma once
 
+class GroupProvider;
+
 class Group : public BaseObject {
+private:
     HGROUP mPGroup;
 public:
     std::wstring csvName;
@@ -12,4 +15,6 @@ public:
     ~Group() {
         CloseClusterGroup(mPGroup);
     }
+
+    friend class GroupProvider;
 };

@@ -5,5 +5,7 @@ class GroupProvider : public Provider<Group> {
 public:
     explicit GroupProvider(PCluster);
 
-    void AddNewGroup(std::wstring, CLUSGROUP_TYPE);
+    HRESULT AddNewGroup(const std::wstring&, const CLUSGROUP_TYPE) const;
+    HRESULT FindGroupByName(const std::wstring&, Group& ) const;
+    HRESULT DeleteGroup(Group&) const;
 };

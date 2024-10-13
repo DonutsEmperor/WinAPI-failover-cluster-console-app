@@ -21,7 +21,6 @@ int main()
 {
     SetConsoleMode();
     std::wstring input = GetClusterNodeName();
-
     const Manager manager(&input);
 
     const ClusterProvider* clusProvider = manager.GetClusterProvider();
@@ -56,6 +55,30 @@ int main()
     std::list<Group> groups;
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);
+
+    return 0;
+
+    ////////////// new demo logic 
+
+    std::wcout << "\n New demo logic!!! \n" << std::endl;
+
+    std::wstring newGroupName;
+    std::wcin >> newGroupName;
+
+    groupProvider->AddNewGroup(newGroupName, CLUSGROUP_TYPE::ClusGroupTypeVirtualMachine);
+    groupProvider->GetAll(groups);
+    groupLogger->LogListSpecial(groups);
+
+    return 0; 
+
+    //change this logic
+    Group* group = nullptr;
+    groupProvider->FindGroupByName(newGroupName, *group);
+    groupProvider->DeleteGroup(*group);
+
+    groupProvider->GetAll(groups);
+    groupLogger->LogListSpecial(groups);
+
 
     return 0;
 }

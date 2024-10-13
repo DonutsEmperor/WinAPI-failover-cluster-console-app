@@ -1,5 +1,7 @@
 #pragma once
 
+class NodeProvider;
+
 class Node : public BaseObject {
     HNODE mPNode;
 public:
@@ -13,4 +15,6 @@ public:
     ~Node() {
         CloseClusterNode(mPNode);
     }
+
+    friend class NodeProvider;
 };
