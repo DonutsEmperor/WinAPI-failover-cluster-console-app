@@ -18,37 +18,23 @@ HRESULT GroupProvider::AddNewGroup(const std::wstring& name, const CLUSGROUP_TYP
     return S_OK;
 }
 
-HRESULT GroupProvider::DeleteGroup(Group& group) const {
+HRESULT GroupProvider::DeleteGroup(Group*& group) const {
 
-    DWORD error = DeleteClusterGroup(group.mPGroup);
+    /*std::list<Group>::const_iterator required;
+    HRESULT hr = this->GetIterator(group->properties.itemName, required);
 
-    if (!error)
-        return S_FALSE;
+    if (SUCCEEDED(hr))
+        if (required != mCluster->mGroups.end()) {
+            std::wcout << required->properties.itemName << std::endl;
+            mCluster->mGroups.erase(required);
+            std::wcout << "\n New demo logic 2!!! \n" << std::endl;
+            hr = DeleteClusterGroup(group->mPGroup);
+            std::wcout << "\n New demo logic 3!!! \n" << std::endl;
+        }
+    std::wcout << "\n New demo logic 4!!! \n" << std::endl;
 
-    std::list<Group>::iterator required = std::find_if(mCluster->mGroups.begin(),
-        mCluster->mGroups.end(), [&group](const Group& g) {
-            return (g.properties.itemName == group.properties.itemName);
-        });
-
-    if (required == mCluster->mGroups.end()) {
-        mCluster->mGroups.erase(required);
-        return S_OK;
-    }
-
-    return S_FALSE;
-}
-
-HRESULT GroupProvider::FindGroupByName(const std::wstring& name, Group& group) const {
-
-    std::list<Group>::iterator required = std::find_if(mCluster->mGroups.begin(), // rewrite as generic method for findign ITERATOR
-        mCluster->mGroups.end(), [&name](const Group& g) {      
-            return (g.properties.itemName == name);
-        });
-
-    if (required == mCluster->mGroups.end()) {
-        group = *required;
-        return S_OK;
-    }
+    if (SUCCEEDED(hr))
+        return S_OK;*/
 
     return S_FALSE;
 }

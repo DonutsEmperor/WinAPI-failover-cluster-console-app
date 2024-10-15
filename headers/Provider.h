@@ -15,7 +15,10 @@ public:
     virtual ~Provider() = default;
 
     HRESULT GetAll(std::list<T>&) const override;
-    HRESULT GetById(const std::wstring&, T&) const override;
+    HRESULT GetItem(const std::wstring&, T*&) const override;
+
+protected:
+    HRESULT GetIterator(const std::wstring& name, T*& iter) const;
 };
 
 #include "Provider.inl"

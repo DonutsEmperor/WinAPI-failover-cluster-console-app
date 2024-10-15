@@ -6,6 +6,5 @@ public:
     explicit GroupProvider(PCluster);
 
     HRESULT AddNewGroup(const std::wstring&, const CLUSGROUP_TYPE) const;
-    HRESULT FindGroupByName(const std::wstring&, Group& ) const;
-    HRESULT DeleteGroup(Group&) const;
+    HRESULT DeleteGroup(Group*&) const;
 };

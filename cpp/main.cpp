@@ -56,7 +56,14 @@ int main()
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);
 
-    return 0;
+    std::wcout << "\n New log demo logic!!! \n" << std::endl;
+
+    for (auto& it : groups) {
+        std::wcout << it.properties.itemName << std::endl;
+        std::wcout << it.properties.itemId << std::endl;
+    }
+
+    //return 0;
 
     ////////////// new demo logic 
 
@@ -65,20 +72,26 @@ int main()
     std::wstring newGroupName;
     std::wcin >> newGroupName;
 
-    groupProvider->AddNewGroup(newGroupName, CLUSGROUP_TYPE::ClusGroupTypeVirtualMachine);
+    /*groupProvider->AddNewGroup(newGroupName, CLUSGROUP_TYPE::ClusGroupTypeVirtualMachine);
     groupProvider->GetAll(groups);
-    groupLogger->LogListSpecial(groups);
-
-    return 0; 
-
-    //change this logic
+    groupLogger->LogListSpecial(groups);*/
+    
     Group* group = nullptr;
-    groupProvider->FindGroupByName(newGroupName, *group);
-    groupProvider->DeleteGroup(*group);
+    groupProvider->GetItem(newGroupName, group);
 
+    std::wcout << group << std::endl;
+    std::wcout << group->properties.itemName << std::endl;
+    std::wcout << group->properties.itemId << std::endl;
+    std::wcout << group->properties.version << std::endl;
+    std::wcout << group->properties.type << std::endl;
+
+    return 0;
+
+    groupProvider->DeleteGroup(group);
+
+    std::wcout << "\n Delete logic!!! \n" << std::endl;
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);
-
 
     return 0;
 }
