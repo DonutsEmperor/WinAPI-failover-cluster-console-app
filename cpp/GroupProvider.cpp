@@ -19,18 +19,25 @@ HRESULT GroupProvider::AddNewGroup(const std::wstring& name, const CLUSGROUP_TYP
 }
 
 HRESULT GroupProvider::DeleteGroup(Group& group) const {
+    //std::wcout << "Old handler: " << group.mPGroup << std::endl;
+    //group.OpenHandler();
 
     std::list<Group>::iterator required;
     HRESULT hr = this->GetIterator(group.properties.itemName, required);
 
     if (SUCCEEDED(hr))
         if (required != mCluster->mGroups.end()) {
+            // fix this logic
+            //std::wcout << "New handler: " << group.mPGroup << std::endl;
+            //hr = DestroyClusterGroup(group.mPGroup);
+            //hr = DeleteClusterGroup(group.mPGroup);
             mCluster->mGroups.erase(required);
-            hr = DeleteClusterGroup(required->mPGroup);
         }
+
+    group.CloseHandler();
 
     if (SUCCEEDED(hr))
         return S_OK;
 
-    return S_FALSE;
+    return hr;
 }

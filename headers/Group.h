@@ -6,14 +6,15 @@ class Group : public BaseObject {
 private:
     HGROUP mPGroup;
 public:
-    std::wstring csvName;
+    //std::wstring csvName;
 
     Group() : BaseObject(), mPGroup(nullptr) {};
     Group(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct);
     ~Group();
 
-private:
-    HRESULT UpdateHandler() override;
+protected:
+    HRESULT OpenHandler() override;
+    HRESULT CloseHandler() override;
 
     friend class GroupProvider;
 };

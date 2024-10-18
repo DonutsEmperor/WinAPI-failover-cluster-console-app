@@ -12,7 +12,8 @@ public:
     ~Node();
 
 private:
-    HRESULT UpdateHandler() override;
+    HRESULT OpenHandler() override;
+    HRESULT CloseHandler() override;
 
     friend class NodeProvider;
 };

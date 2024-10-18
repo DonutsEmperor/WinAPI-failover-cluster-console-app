@@ -64,30 +64,34 @@ class ResourceType : public BaseObject {
 public:
     ResourceType(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
         : BaseObject(pCluster, pWinStruct) {}
-private:
-    HRESULT UpdateHandler() override { return S_OK; }
+protected:
+    HRESULT OpenHandler() override { return S_OK; }
+    HRESULT CloseHandler() override { return S_OK; }
 };
 
 class Network : public BaseObject {
 public:
     Network(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
         : BaseObject(pCluster, pWinStruct) {}
-private:
-    HRESULT UpdateHandler() override { return S_OK; };
+protected:
+    HRESULT OpenHandler() override { return S_OK; }
+    HRESULT CloseHandler() override { return S_OK; }
 };
 
 class NetInterface : public BaseObject {
 public:
     NetInterface(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
         : BaseObject(pCluster, pWinStruct) {}
-private:
-    HRESULT UpdateHandler() override { return S_OK; };
+protected:
+    HRESULT OpenHandler() override { return S_OK; }
+    HRESULT CloseHandler() override { return S_OK; }
 };
 
 class SharedVolume : public BaseObject {
 public:
     SharedVolume(PCluster pCluster, PCLUSTER_ENUM_ITEM pWinStruct)
         : BaseObject(pCluster, pWinStruct) {}
-private:
-    HRESULT UpdateHandler() override { return S_OK; }
+protected:
+    HRESULT OpenHandler() override { return S_OK; }
+    HRESULT CloseHandler() override { return S_OK; }
 };

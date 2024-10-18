@@ -2,13 +2,18 @@
 
 Node::Node(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct)
     : BaseObject(pCluster, pWinStruct) {
-    mPNode = OpenClusterNode(pCluster->mHandler, pWinStruct->lpszName);
+    OpenHandler();
     state = GetClusterNodeState(mPNode);
 }
 Node::~Node() {
-    CloseClusterNode(mPNode);
+    CloseHandler();
 }
 
-HRESULT Node::UpdateHandler() {
+HRESULT Node::OpenHandler() {
+    mPNode = OpenClusterNode(cluster->mHandler, properties.itemName.c_str());
+    return S_OK;
+}
+HRESULT Node::CloseHandler() {
+    CloseClusterNode(mPNode);
     return S_OK;
 }

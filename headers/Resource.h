@@ -29,7 +29,8 @@ public:
     ~Resource();
 
 private:
-    HRESULT UpdateHandler() override;
+    HRESULT OpenHandler() override;
+    HRESULT CloseHandler() override;
 
     HRESULT FetchResourceType();
     HRESULT FetchClusterDiskInfo();

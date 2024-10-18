@@ -6,12 +6,12 @@ Resource::Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct)
     mErrorHandler = FetchClusterDiskInfo();
 }
 Resource::~Resource() {
-    CloseClusterResource(mPResource);
+    CloseHandler();
 }
 
 HRESULT Resource::FetchResourceType()
 {
-    mPResource = OpenClusterResource(cluster->mHandler, properties.itemName.c_str());
+    this->OpenHandler();
 
     DWORD initialSizeOfBuffer = 64, returnedSizeOfBuffer = 0;
     LPVOID buffer = malloc(sizeof(WCHAR) * initialSizeOfBuffer);
@@ -41,14 +41,14 @@ HRESULT Resource::FetchResourceType()
     }
 
     free(buffer);
-    CloseClusterResource(mPResource);
+    this->CloseHandler();
 
     return S_OK;
 }
 
 HRESULT Resource::FetchClusterDiskInfo()
 {
-    mPResource = OpenClusterResource(cluster->mHandler, properties.itemName.c_str());
+    this->OpenHandler();
 
     DWORD size = 0;
     DWORD errorcode = ClusterResourceControl(mPResource, nullptr,
@@ -74,8 +74,12 @@ HRESULT Resource::FetchClusterDiskInfo()
         MakingUp_DiskValueList(mDI, ptr);
 
         diskInfo = std::make_shared<PhysicalDiskInfo>(mDI);
+
+        this->CloseHandler();
         return S_OK;
     }
+
+    this->CloseHandler();
     return S_FALSE;
 }
 
@@ -164,6 +168,12 @@ void Resource::MakingUp_DiskValueList(PhysicalDiskInfo& pDI, const BYTE*& ptr) c
     }
 }
 
-HRESULT Resource::UpdateHandler() {
+HRESULT Resource::OpenHandler() {
+    mPResource = OpenClusterResource(cluster->mHandler, properties.itemName.c_str());
+    return S_OK;
+}
+
+HRESULT Resource::CloseHandler() {
+    CloseClusterResource(mPResource);
     return S_OK;
 }
