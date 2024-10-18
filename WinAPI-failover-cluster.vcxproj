@@ -22,15 +22,17 @@
     <ClCompile Include="cpp\Cluster.cpp" />
     <ClCompile Include="cpp\ClusterLogger.cpp" />
     <ClCompile Include="cpp\ClusterProvider.cpp" />
+    <ClCompile Include="cpp\Group.cpp" />
     <ClCompile Include="cpp\GroupLogger.cpp" />
     <ClCompile Include="cpp\GroupProvider.cpp" />
     <ClCompile Include="cpp\Manager.cpp" />
+    <ClCompile Include="cpp\Node.cpp" />
     <ClCompile Include="cpp\NodeLogger.cpp" />
     <ClCompile Include="cpp\NodeProvider.cpp" />
+    <ClCompile Include="cpp\Resource.cpp" />
     <ClCompile Include="cpp\ResourceLogger.cpp" />
     <ClCompile Include="cpp\ResourceProvider.cpp" />
     <ClCompile Include="cpp\main.cpp" />
-    <ClCompile Include="cpp\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Cluster.h" />

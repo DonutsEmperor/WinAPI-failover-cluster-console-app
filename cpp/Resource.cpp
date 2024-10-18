@@ -5,7 +5,9 @@ Resource::Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct)
     mErrorHandler = FetchResourceType();
     mErrorHandler = FetchClusterDiskInfo();
 }
-Resource::~Resource() {}
+Resource::~Resource() {
+    CloseClusterResource(mPResource);
+}
 
 HRESULT Resource::FetchResourceType()
 {
@@ -160,4 +162,8 @@ void Resource::MakingUp_DiskValueList(PhysicalDiskInfo& pDI, const BYTE*& ptr) c
             }
         }
     }
+}
+
+HRESULT Resource::UpdateHandler() {
+    return S_OK;
 }
