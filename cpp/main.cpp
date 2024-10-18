@@ -46,7 +46,7 @@ int main()
 
     resourceProvider->GetPhysicalDiskResources(resources);
     for (auto it : resources) {
-        resourceLogger->LogBase(it);
+        resourceLogger->LogOneBase(it);
         resourceLogger->LogPhysicalDiskInfo(it.diskInfo.get());
     }
 
@@ -56,19 +56,6 @@ int main()
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);
 
-    std::wcout << "\n New log demo logic!!! \n" << std::endl;
-
-    for (auto& it : groups) {
-        std::wcout << it.properties.itemName << std::endl;
-        std::wcout << it.properties.itemId << std::endl;
-    }
-
-    //return 0;
-
-    ////////////// new demo logic 
-
-    std::wcout << "\n New demo logic!!! \n" << std::endl;
-
     std::wstring newGroupName;
     std::wcin >> newGroupName;
 
@@ -76,20 +63,13 @@ int main()
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);*/
     
-    Group* group = nullptr;
+    Group group = Group();
     groupProvider->GetItem(newGroupName, group);
+    groupLogger->LogOneBase(group);
+    groupLogger->LogOneSpecial(group);
+    groups.clear();
 
-    std::wcout << group << std::endl;
-    std::wcout << group->properties.itemName << std::endl;
-    std::wcout << group->properties.itemId << std::endl;
-    std::wcout << group->properties.version << std::endl;
-    std::wcout << group->properties.type << std::endl;
-
-    return 0;
-
-    groupProvider->DeleteGroup(group);
-
-    std::wcout << "\n Delete logic!!! \n" << std::endl;
+    std::wcout << groupProvider->DeleteGroup(group) << std::endl;
     groupProvider->GetAll(groups);
     groupLogger->LogListSpecial(groups);
 

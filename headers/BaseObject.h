@@ -7,6 +7,7 @@ public:
     PCluster cluster;
     Properties properties;
 
+    BaseObject() = default;
     BaseObject(const PCluster hCluster, const PCLUSTER_ENUM_ITEM lProperties)
         : cluster(hCluster), properties(*lProperties), mErrorHandler(0) {}
 };

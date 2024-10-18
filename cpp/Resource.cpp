@@ -5,7 +5,9 @@ Resource::Resource(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct)
     mErrorHandler = FetchResourceType();
     mErrorHandler = FetchClusterDiskInfo();
 }
-Resource::~Resource() {}
+Resource::~Resource() {
+    CloseClusterResource(mPResource);
+}
 
 HRESULT Resource::FetchResourceType()
 {

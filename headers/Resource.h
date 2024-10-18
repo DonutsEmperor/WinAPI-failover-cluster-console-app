@@ -24,6 +24,7 @@ public:
     std::wstring resTypeName;
     std::shared_ptr<PhysicalDiskInfo> diskInfo;
 
+    Resource() : BaseObject(), mPResource(nullptr) {}
     Resource(const PCluster, const PCLUSTER_ENUM_ITEM);
     ~Resource();
 

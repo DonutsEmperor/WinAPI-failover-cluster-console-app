@@ -35,6 +35,7 @@ public:
     std::list<NetInterface> mNetInterfaces;
     std::list<SharedVolume> mCSVs;
 
+    Cluster() = default;
     Cluster(const HCLUSTER, const std::wstring&);
     ~Cluster();
 

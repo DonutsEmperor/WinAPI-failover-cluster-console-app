@@ -1,6 +1,6 @@
 
 template <typename T>
-void Logger<T>::LogBase(const T& item) const {
+void Logger<T>::LogOneBase(const T& item) const {
     if constexpr (!std::is_same_v<T, Cluster>) {
         std::wcout << "Item Id        [" << item.properties.itemId << "]\n";
         std::wcout << "Item Name      [" << item.properties.itemName << "]\n";
@@ -10,7 +10,7 @@ void Logger<T>::LogBase(const T& item) const {
 }
 
 template <typename T>
-void Logger<T>::LogSpecial(const T& item) const {
+void Logger<T>::LogOneSpecial(const T& item) const {
     if constexpr (std::is_same_v<T, Node>) {
         std::wcout << "Node Id   [" << item.properties.itemId << "]\n";
         std::wcout << "Node Name [" << item.properties.itemName << "]\n";
@@ -41,7 +41,7 @@ template <typename T>
 void Logger<T>::LogListBase(const std::list<T>& items) const {
     if constexpr (!std::is_same_v<T, Cluster>) {
         IterateItems(items, [this](const T& item) {
-            LogBase(item);
+            LogOneBase(item);
             });
     }
 }
@@ -50,7 +50,7 @@ template <typename T>
 void Logger<T>::LogListSpecial(const std::list<T>& items) const {
     if constexpr (!std::is_same_v<T, Cluster>) {
         IterateItems(items, [this](const T& item) {
-            LogSpecial(item);
+            LogOneSpecial(item);
             });
     }
 }

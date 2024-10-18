@@ -8,13 +8,9 @@ private:
 public:
     std::wstring csvName;
 
-    Group(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct) 
-        : BaseObject(pCluster, pWinStruct) {
-        mPGroup = OpenClusterGroup(pCluster->mHandler, pWinStruct->lpszName);
-    }
-    ~Group() {
-        CloseClusterGroup(mPGroup);
-    }
+    Group() : BaseObject(), mPGroup(nullptr) {};
+    Group(const PCluster pCluster, const PCLUSTER_ENUM_ITEM pWinStruct);
+    ~Group();
 
     friend class GroupProvider;
 };

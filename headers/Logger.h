@@ -10,8 +10,8 @@ public:
     explicit Logger() = default;
     virtual ~Logger() = default;
 
-    virtual void LogBase(const T& item) const override;
-    virtual void LogSpecial(const T& item) const override;
+    virtual void LogOneBase(const T& item) const override;
+    virtual void LogOneSpecial(const T& item) const override;
     virtual void LogListBase(const std::list<T>& items) const override;
     virtual void LogListSpecial(const std::list<T>& items) const override;
 
